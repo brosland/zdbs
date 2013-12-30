@@ -222,7 +222,7 @@
         ],
         "authors": [
             {
-                "name": "Jonathan H. Wage",
+                "name": "Jonathan Wage",
                 "email": "jonwage@gmail.com",
                 "homepage": "http://www.jwage.com/",
                 "role": "Creator"
@@ -397,7 +397,7 @@
         ],
         "authors": [
             {
-                "name": "Jonathan H. Wage",
+                "name": "Jonathan Wage",
                 "email": "jonwage@gmail.com",
                 "homepage": "http://www.jwage.com/",
                 "role": "Creator"
@@ -527,7 +527,7 @@
         ],
         "authors": [
             {
-                "name": "Jonathan H. Wage",
+                "name": "Jonathan Wage",
                 "email": "jonwage@gmail.com",
                 "homepage": "http://www.jwage.com/",
                 "role": "Creator"
@@ -1075,57 +1075,6 @@
         ]
     },
     {
-        "name": "jurasm2/gettexttranslator",
-        "version": "2.0.6",
-        "version_normalized": "2.0.6.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/jurasm2/GettextTranslator.git",
-            "reference": "34dab4d753e236a5e66b2f793d1fedc46ec9f550"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/jurasm2/GettextTranslator/zipball/34dab4d753e236a5e66b2f793d1fedc46ec9f550",
-            "reference": "34dab4d753e236a5e66b2f793d1fedc46ec9f550",
-            "shasum": ""
-        },
-        "require": {
-            "nette/nette": ">=2.0.0",
-            "php": ">=5.3.0"
-        },
-        "time": "2013-07-21 12:36:14",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "classmap": [
-                "GettextTranslator/"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "BSD-3-Clause"
-        ],
-        "authors": [
-            {
-                "name": "Patrik Votoček",
-                "email": "patrik@votocek.cz",
-                "homepage": "http://patrik.votocek.cz",
-                "role": "Developer"
-            },
-            {
-                "name": "Tomáš Votruba",
-                "homepage": "http://tomasvotruba.cz"
-            }
-        ],
-        "description": "Translator for Nette (PHP framework).",
-        "homepage": "http://addons.nette.org/en/gettext-translator",
-        "keywords": [
-            "gettext",
-            "nette",
-            "translator"
-        ]
-    },
-    {
         "name": "kdyby/forms-replicator",
         "version": "dev-nette-2.0",
         "version_normalized": "dev-nette-2.0",
@@ -1174,6 +1123,57 @@
             "kdyby",
             "nette",
             "replicator"
+        ]
+    },
+    {
+        "name": "jurasm2/gettexttranslator",
+        "version": "2.0.6",
+        "version_normalized": "2.0.6.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/jurasm2/GettextTranslator.git",
+            "reference": "34dab4d753e236a5e66b2f793d1fedc46ec9f550"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/jurasm2/GettextTranslator/zipball/34dab4d753e236a5e66b2f793d1fedc46ec9f550",
+            "reference": "34dab4d753e236a5e66b2f793d1fedc46ec9f550",
+            "shasum": ""
+        },
+        "require": {
+            "nette/nette": ">=2.0.0",
+            "php": ">=5.3.0"
+        },
+        "time": "2013-07-21 12:36:14",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "classmap": [
+                "GettextTranslator/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Patrik Votoček",
+                "email": "patrik@votocek.cz",
+                "homepage": "http://patrik.votocek.cz",
+                "role": "Developer"
+            },
+            {
+                "name": "Tomáš Votruba",
+                "homepage": "http://tomasvotruba.cz"
+            }
+        ],
+        "description": "Translator for Nette (PHP framework).",
+        "homepage": "http://addons.nette.org/en/gettext-translator",
+        "keywords": [
+            "gettext",
+            "nette",
+            "translator"
         ]
     }
 ]

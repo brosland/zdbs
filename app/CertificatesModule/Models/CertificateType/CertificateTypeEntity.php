@@ -1,7 +1,7 @@
 <?php
 namespace CertificatesModule\Models\CertificateType;
 
-use CertificatesModule\Models\CertificateTypeCategory\CategoryEntity,
+use CertificatesModule\Models\Category\CategoryEntity,
 	Doctrine\Common\Collections\ArrayCollection,
 	Doctrine\ORM\Mapping as ORM;
 
@@ -13,10 +13,10 @@ class CertificateTypeEntity extends \Brosland\Model\Entity
 {
 	/**
 	 * @ORM\ManyToOne(
-	 * 	targetEntity="CertificatesModule\Models\CertificateTypeCategory\CategoryEntity",
+	 * 	targetEntity="CertificatesModule\Models\Category\CategoryEntity",
 	 * 	inversedBy="certificateTypes"
 	 * )
-	 * @ORM\JoinColumn(name="certificateTypeCategory_id")
+	 * @ORM\JoinColumn(name="category_id")
 	 * @var CategoryEntity
 	 */
 	private $category;

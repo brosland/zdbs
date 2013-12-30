@@ -1,5 +1,5 @@
 <?php
-namespace CertificatesModule\Models\CertificateTypeCategory;
+namespace CertificatesModule\Models\Category;
 
 use Doctrine\Common\Collections\ArrayCollection,
 	Doctrine\ORM\Mapping as ORM;
@@ -16,7 +16,7 @@ class CategoryEntity extends \Brosland\Model\Entity
 	 */
 	private $name;
 	/**
-	 * @ORM\Column(unique=TRUE)
+	 * @ORM\Column(unique=TRUE, length=64)
 	 * @var string
 	 */
 	private $codePrefix;
@@ -56,10 +56,12 @@ class CategoryEntity extends \Brosland\Model\Entity
 
 	/**
 	 * @param string $name
+	 * @return self
 	 */
 	public function setName($name)
 	{
 		$this->name = $name;
+		return $this;
 	}
 	
 	/**
@@ -72,10 +74,12 @@ class CategoryEntity extends \Brosland\Model\Entity
 
 	/**
 	 * @param string $codePrefix
+	 * @return self
 	 */
 	public function setCodePrefix($codePrefix)
 	{
 		$this->codePrefix = $codePrefix;
+		return $this;
 	}
 	
 	/**
@@ -88,10 +92,12 @@ class CategoryEntity extends \Brosland\Model\Entity
 
 	/**
 	 * @param string $description
+	 * @return self
 	 */
 	public function setDescription($description)
 	{
 		$this->description = $description;
+		return $this;
 	}
 	
 	/**

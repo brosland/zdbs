@@ -217,7 +217,7 @@ class CertificateTypeEntity extends \CertificatesModule\Models\CertificateType\C
     /**
      * {@inheritDoc}
      */
-    public function setCategory(\CertificatesModule\Models\CertificateTypeCategory\CategoryEntity $category)
+    public function setCategory(\CertificatesModule\Models\Category\CategoryEntity $category)
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setCategory', array($category));
