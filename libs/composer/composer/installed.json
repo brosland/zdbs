@@ -222,7 +222,7 @@
         ],
         "authors": [
             {
-                "name": "Jonathan Wage",
+                "name": "Jonathan H. Wage",
                 "email": "jonwage@gmail.com",
                 "homepage": "http://www.jwage.com/",
                 "role": "Creator"
@@ -397,7 +397,7 @@
         ],
         "authors": [
             {
-                "name": "Jonathan Wage",
+                "name": "Jonathan H. Wage",
                 "email": "jonwage@gmail.com",
                 "homepage": "http://www.jwage.com/",
                 "role": "Creator"
@@ -527,7 +527,7 @@
         ],
         "authors": [
             {
-                "name": "Jonathan Wage",
+                "name": "Jonathan H. Wage",
                 "email": "jonwage@gmail.com",
                 "homepage": "http://www.jwage.com/",
                 "role": "Creator"
@@ -1075,57 +1075,6 @@
         ]
     },
     {
-        "name": "kdyby/forms-replicator",
-        "version": "dev-nette-2.0",
-        "version_normalized": "dev-nette-2.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/Kdyby/Replicator.git",
-            "reference": "8213a9a29dce8248b8115edcf96b19d2d51dcbe3"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/Kdyby/Replicator/zipball/8213a9a29dce8248b8115edcf96b19d2d51dcbe3",
-            "reference": "8213a9a29dce8248b8115edcf96b19d2d51dcbe3",
-            "shasum": ""
-        },
-        "require": {
-            "nette/nette": "~2.0"
-        },
-        "require-dev": {
-            "nette/tester": "@dev"
-        },
-        "time": "2013-07-09 00:56:09",
-        "type": "library",
-        "installation-source": "source",
-        "autoload": {
-            "psr-0": {
-                "Kdyby\\Replicator\\": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "BSD-3-Clause",
-            "GPL-2.0",
-            "GPL-3.0"
-        ],
-        "authors": [
-            {
-                "name": "Filip Procházka",
-                "homepage": "http://filip-prochazka.com"
-            }
-        ],
-        "description": "Nette forms container replicator aka addDynamic",
-        "homepage": "http://kdyby.org",
-        "keywords": [
-            "Forms",
-            "addDynamic",
-            "kdyby",
-            "nette",
-            "replicator"
-        ]
-    },
-    {
         "name": "jurasm2/gettexttranslator",
         "version": "2.0.6",
         "version_normalized": "2.0.6.0",
@@ -1174,6 +1123,57 @@
             "gettext",
             "nette",
             "translator"
+        ]
+    },
+    {
+        "name": "kdyby/forms-replicator",
+        "version": "dev-nette-2.0",
+        "version_normalized": "dev-nette-2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/Kdyby/Replicator.git",
+            "reference": "8213a9a29dce8248b8115edcf96b19d2d51dcbe3"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/Kdyby/Replicator/zipball/8213a9a29dce8248b8115edcf96b19d2d51dcbe3",
+            "reference": "8213a9a29dce8248b8115edcf96b19d2d51dcbe3",
+            "shasum": ""
+        },
+        "require": {
+            "nette/nette": "~2.0"
+        },
+        "require-dev": {
+            "nette/tester": "@dev"
+        },
+        "time": "2013-07-09 00:56:09",
+        "type": "library",
+        "installation-source": "source",
+        "autoload": {
+            "psr-0": {
+                "Kdyby\\Replicator\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause",
+            "GPL-2.0",
+            "GPL-3.0"
+        ],
+        "authors": [
+            {
+                "name": "Filip Procházka",
+                "homepage": "http://filip-prochazka.com"
+            }
+        ],
+        "description": "Nette forms container replicator aka addDynamic",
+        "homepage": "http://kdyby.org",
+        "keywords": [
+            "Forms",
+            "addDynamic",
+            "kdyby",
+            "nette",
+            "replicator"
         ]
     }
 ]
