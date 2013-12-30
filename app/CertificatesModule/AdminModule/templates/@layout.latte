@@ -1,0 +1,12 @@
+{extends APP_DIR.'/templates/@layout.latte'}
+{var $presenterName = $control->getPresenterName()}
+
+{block #head}
+<link rel="stylesheet" type="text/css" media="all" href="{$basePath}/css/certificates/admin/screen.css">
+{/block}
+
+{block #menu}
+<ul>
+	<li {if $presenterName == 'CertificateType'}class="current"{/if}><a n:href="CertificateType:add">Typy certifikátov</a></li>
+</ul>
+{/block}

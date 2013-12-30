@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">
+		<meta n:ifset="$description" name="description" content="{$description}">
+		<meta n:ifset="$keywords" name="keywords" content="{$keywords}">
+		<meta name="robots" content="noindex">
+		<meta name="googlebot" content="noindex">
+		
+		<!-- jQuery -->
+		<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.0/themes/smoothness/jquery-ui.css" media="all" type="text/css" rel="stylesheet">
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.0/jquery-ui.min.js"></script>
+		
+		<!-- Google -->
+		<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Oswald&subset=latin,latin-ext">
+		<script type="text/javascript" src="{$basePath}/js/google.translate.js"></script>
+		
+		<!-- fancyBox -->
+		<link rel="stylesheet" href="{$basePath}/plugins/fancybox/source/jquery.fancybox.css?v=2.1.4" type="text/css" media="screen" />
+		<script type="text/javascript" src="{$basePath}/plugins/fancybox/source/jquery.fancybox.pack.js?v=2.1.4"></script>
+		
+		<!-- Nette -->
+		<script type="text/javascript" src="{$basePath}/js/netteForms.js"></script>
+		<script type="text/javascript" src="{$basePath}/js/nette.ajax.js"></script>
+		
+		<!-- brosland -->
+		<script type="text/javascript" src="{$basePath}/js/jquery.brosland.js"></script>
+		<link rel="stylesheet" type="text/css" media="all" href="{$basePath}/css/screen.css?v=1.0">
+		
+		{block #head}{/block}
+		<title>{ifset $title}{$title} | {/ifset}{$control->getPageParam('name')}</title>
+	</head>
+	<body n:inner-block="body">
+		<div id="page-wrap">
+			<div id="page">
+				<div id="header-wrap">
+					<div id="header">
+						<div id="links">
+							<ul class="ui-helper-clearfix">
+								{if $user->isLoggedIn()}
+								<li n:if="$user->isAllowed('administration')"><a n:href=":Admin:Dashboard:">Administrácia</a></li>
+								<li><a n:href=":Front:User:edit">Profil</a></li>
+								<li><a n:href=":Front:Sign:out">Odhlásiť sa</a>
+								{else}
+								<li><a n:href=":Front:Sign:in">Prihlásiť</a></li>
+								{/if}
+							</ul>
+						</div>
+						<div id="logo">
+							<h1><a n:href=":Front:Homepage:" class="notranslate">{$control->getPageParam('name')}</a></h1>
+						</div>
+					</div>
+				</div>
+				<div id="menu-wrap">
+					<div n:inner-block="menu" id="menu"></div>
+				</div>
+				<div id="content-wrap">
+					<div id="content-wrap2">
+						<div id="content-wrap-inner" class="ui-helper-clearfix">
+							<div id="content" class="ui-helper-clearfix">
+								{snippet #content}
+									{snippet flashMessages}
+									<div n:foreach="$flashes as $flash" class="flash message {$flash->type}">{$flash->message}</div>
+									{/snippet}
+									{include #content}
+								{/snippet}
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="footer-wrap">
+					<div id="footer">
+						<b class="notranslate">&copy;2013 {$control->getPageParam('name')}</b>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

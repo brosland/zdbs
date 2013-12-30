@@ -1,0 +1,10 @@
+{extends APP_DIR.'/templates/@layout.latte'}
+
+{block #menu}
+<ul>
+	<li><a n:href=":Admin:Dashboard:default">Administrácia</a></li>
+	<li><a n:href=":Forms:Admin:Dashboard:default">Formuláre</a></li>
+	<!--<li><a n:href=":Tracking:Admin:Track:list">Trekovanie</a></li>-->
+	<li><a n:href=":Admin:User:list">Používateľia</a></li>
+</ul>
+{/block}

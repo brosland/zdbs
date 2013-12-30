@@ -1,0 +1,8 @@
+{extends $parentTemplate}
+{block #row-columns}
+	<td><a n:fhref="$item">{$item->name}</a></td>
+	<td class="column-right column-size">{$item->getSize('kb')} kb</td>
+{/block}
+{block #row-actions}
+	<a n:fhref="$item" class="ui-state-default"><span class="ui-icon ui-icon-link">link</span></a>
+{/block}

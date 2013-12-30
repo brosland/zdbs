@@ -1,0 +1,30 @@
+{block content}
+<h2>{if $control->action === 'add'}Vytvorenie{else}Editácia{/if} typu certifikátu</h2>
+
+{snippet certificateTypeForm}
+	{var $form = $control['certificateTypeForm']}
+	{form $form}
+		{group 'Certifikát'}
+		<fieldset id="param-types">
+			<legend>Parametre certifikátu</legend>
+			<div n:foreach="$form['paramTypes']->containers as $id => $paramType" class="param-type ui-helper-clearfix">
+				<div class="column dragdrop-drag-handle">
+					a
+				</div>
+				<div class="column">
+					{pair paramTypes-$id-label}
+					{pair paramTypes-$id-paramTypeId}
+				</div>
+				<div class="column">
+					{pair paramTypes-$id-name}
+					<div class="required-field">{pair paramTypes-$id-required}</div>
+				</div>
+				<div class="column remove-button">
+					{input paramTypes-$id-remove}
+				</div>
+			</div>
+		</fieldset>
+		{form buttons}
+	{/form}
+{/snippet}
+{/block}

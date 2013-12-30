@@ -1,0 +1,9 @@
+{extends $parentTemplate}
+{block #row-columns}
+<td>{$item->name}</td>
+<td>{$item->surname}</td>
+<td>{$item->email}</td>
+<td>{$item->registered|date:'j.n.Y, H:i'}</td>
+<td>{$item->lastLog|date:'j.n.Y, H:i'}</td>
+<td>{foreach $item->roles as $role}{$role->label}{sep}, {/sep}{/foreach}</td>
+{/block}

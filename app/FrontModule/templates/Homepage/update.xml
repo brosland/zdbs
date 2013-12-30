@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<request>
+	<auth>
+		<key>lV19zVtTUCPf4D91o7GU3asx9KjpIeIkqmFVBW14</key>
+	</auth>
+	<data>
+		<item>
+			<id>0260052013061757259000</id>
+			<properties>
+				<firstName>hhh</firstName>
+			</properties>
+		</item>
+	</data>
+</request>
+
+
+<?xml version="1.0" encoding="utf-8"?>
+<response>
+	<error>Trying to update not allowed property</error>
+</response>

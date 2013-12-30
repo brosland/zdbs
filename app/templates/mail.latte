@@ -1,0 +1,19 @@
+{layout none}
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	</head>
+	<body n:inner-block="body">
+		<div n:inner-block="header">
+			<h1>{$page['name']}</h1>
+		</div>
+		<div n:inner-block="content">
+			<p>Dobrý deň,</p>
+			<p n:ifset="$message">{$message}</p>
+		</div>
+		<div n:inner-block="footer">
+			<p>S pozdravom,<br>tím <a href="{$page['owner']['url']}">{$page['owner']['name']}</a></p>
+		</div>
+	</body>
+</html>

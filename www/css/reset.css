@@ -1,0 +1,94 @@
+/*Elements CSS Framework by Ben Henschel*/
+/*Mass Reset*/
+/*Thanks to Eric for this reset http://meyerweb.com/eric/thoughts/2007/04/14/reworked-reset/ */
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, dd, dl, dt, li, ol, ul, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td
+{
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	font-weight: inherit;
+	font-style: inherit;
+	font-family: inherit;
+	font-size:100%;
+	text-align: left;
+	vertical-align: baseline;
+}
+a img {
+	border:none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+q:before, q:after, blockquote:before, blockquote:after {
+	content: "";
+}
+
+
+h1 {
+	font-size: 200%;
+}
+h2 {
+	font-size: 175%;
+}
+h3 {
+	font-size: 150%;
+}
+h4 {
+	font-weight: bold;
+}
+p {
+	padding: 10px 0;
+}
+
+
+
+/************************************ Form ************************************/
+input, textarea, select {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	border: 1px solid #CCCCCC;
+	margin: 0;
+	padding: 4px;
+	outline: none;
+}
+input[type="checkbox"], input[type="radio"] {
+	background: #ffffff;
+	border: none;
+	margin: 4px;
+	padding: 0;
+}
+input[type="submit"] {
+	padding: 4px;
+	cursor: pointer;
+	font-weight: bold;
+	margin: 0;
+	white-space: nowrap;
+}
+input[type="submit"]::-moz-focus-inner {
+	border: 0;
+}
+select {
+	padding: 3px;
+}
+textarea {
+	width: 100%;
+}
+
+
+
+/*********************************** jQuery ***********************************/
+.ui-state-default {
+	font-family: inherit;
+	display: inline-block;
+	vertical-align: bottom;
+}
+.ui-icon {
+	vertical-align: text-bottom;
+}
+.ui-datepicker {
+	font-size: 9pt;
+}

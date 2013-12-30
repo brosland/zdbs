@@ -1,0 +1,53 @@
+#certificate-type-form {
+	
+}
+#certificate-type-form .param-type {
+	border: 1px solid #CCCCCC;
+}
+#certificate-type-form .param-type:hover .dragdrop-drag-handle {
+	display: block;
+}
+#certificate-type-form .param-type .dragdrop-drag-handle {
+	background: none repeat scroll 0 0 #EDEDED;
+	border-left: 1px solid #D0D0D0;
+	border-right: 1px solid #D0D0D0;
+	cursor: move;
+	font-size: 0;
+	height: 100%;
+	left: -1px;
+	position: absolute;
+	text-align: center;
+	top: 0;
+	visibility: hidden;
+	width: 10px;
+}
+#certificate-type-form .param-type .dragdrop-drag-handle img {
+	background: url("icons.png") no-repeat scroll -19px 0 rgba(0, 0, 0, 0);
+	height: 10px;
+	width: 2px;
+}
+#certificate-type-form .param-type .column {
+	float: left;
+	-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;
+}
+#certificate-type-form .param-type .column + .column {
+	margin-left: 10px;
+}
+#certificate-type-form .param-type .remove-button {
+	float: right;
+}
+#certificate-type-form .param-type + .param-type {
+	border-top: none;
+}
+#certificate-type-form .param-type .required-field .controls {
+	overflow: auto;
+	width: 100%
+}
+#certificate-type-form .param-type .required-field .controls label {
+	float: left;
+}
+#certificate-type-form .param-type .required-field .controls label + label {
+	margin-left: 10px;
+}

@@ -1,0 +1,36 @@
+{
+	"name": "UNIZA - FRI - ZDBS - Certifikáty",
+	"description": "",
+	"keywords": ["mvc", "debugging", "templating", "database", "dbal", "forms", "latte", "neon", "doctrine"],
+	"homepage": "",
+	"authors": [
+		{
+			"name": "Martin Bros",
+			"email": "mbskot@gmail.com"
+		},
+		{
+			"name": "Tomáš Kuba",
+			"email": "tomas.kuba11@gmail.com"
+		},
+		{
+			"name": "Tomáš Isteník",
+			"email": "epholl@gmail.com"
+		},
+		{
+			"name": "Tomáš Hakel",
+			"email": "tohakel@gmail.com"
+		}
+	],
+	"config": {
+		"vendor-dir": "libs/composer"
+	},
+	"require": {
+		"kdyby/bootstrap-form-renderer": "v2.0.0",
+		"kdyby/curl": "v1.0.5",
+		"kdyby/doctrine": "v0.10.3",
+		"kdyby/forms-replicator": "dev-nette-2.0",
+		"jurasm2/gettexttranslator": "2.0.6",
+		"nette/nette": "v2.0.13",
+		"php": ">= 5.4"
+	}
+}

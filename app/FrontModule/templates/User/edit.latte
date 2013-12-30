@@ -1,0 +1,4 @@
+{block content}
+<h2>{if $user->isLoggedIn()}Editácia profilu{elseif $control->hasInvitation()}Registrácia užívateľa{else}Žiadosť o registráciu{/if}</h2>
+{control userForm}
+{/block}

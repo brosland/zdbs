@@ -1,0 +1,71 @@
+#
+# SECURITY WARNING: it is CRITICAL that this file & directory are NOT accessible directly via a web browser!
+#
+# If you don't protect this directory from direct web access, anybody will be able to see your passwords.
+# http://nette.org/security-warning
+#
+common:
+	parameters:
+		page:
+			name: 'Certifikáty'
+			url: 
+			email: 'certificates@noreply.sk'
+			owner:
+				name: 
+				url: 
+		passwordSalt: 'I <3 Moonkay :) 14.12.2013 10:02:07'
+	php:
+		date.timezone: Europe/Prague
+		# zlib.output_compression: yes
+
+	nette:
+		debugger:
+			email: 'mbskot@gmail.com'
+		application:
+#			catchExceptions: TRUE
+			errorPresenter: 'Front:Error'
+		session:
+			expiration: 14 days
+		forms:
+			messages:
+				EMAIL: 'Zadaná emailová adresa má nesprávny tvar.'
+				FILLED: 'Vyplňte povinné pole "%label".'
+				FLOAT: '"%label" zadajte prostredníctvom čísla. Desatinnú časť oddeľte bodkou(".") alebo čiarkou(",").'
+				INTEGER: '"%label" zadajte prostredníctvom celého čísla.'
+				LENGTH: 'Zadajte výraz s počtom znakov: %d.'
+				MAX_LENGTH: 'Zadajte výraz s maximálnym počtom znakov: %d.'
+				MIN_LENGTH: 'Zadajte výraz s minimálnym počtom znakov: %d.'
+				PATTERN: 'Zadaný výraz pre "%label" má nesprávny tvar.'
+				RANGE: '"%label" zadajte prostredníctvom čísla v rozsahu od %d do %d.'
+				URL: 'Zadaná URL adresa má nesprávny tvar.'
+	
+	doctrine:
+		driver: pdo_mysql
+		charset: utf8
+		collation: utf8_unicode_ci
+		metadata:
+			Brosland: %appDir%/../libs/brosland
+			Certificates: %appDir%/CertificatesModule
+			Models: %appDir%
+
+	services:
+		authenticator: Brosland\Security\Authenticator(@userDao, %passwordSalt%)
+		authorizator: Security\Authorizator
+
+		routerFactory: Router\RouterFactory
+		router: @routerFactory::createRouter
+		
+		roleDao: @doctrine.dao(Brosland\Security\Role\RoleEntity)
+		userDao: @doctrine.dao(Brosland\Security\User\UserEntity)
+		adminDao: @doctrine.dao(Models\Admin\AdminEntity)
+
+	factories:
+
+production < common:
+
+development < common:
+	doctrine:
+		host: localhost
+		dbname: zdbs2
+		user: root
+		password: 
