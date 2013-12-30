@@ -8,14 +8,14 @@
 		<fieldset id="param-types">
 			<legend>Parametre certifikátu</legend>
 			<div n:foreach="$form['paramTypes']->containers as $id => $paramType" class="param-type ui-helper-clearfix">
-				<div class="column dragdrop-drag-handle">
-					a
-				</div>
-				<div class="column">
+				<span class="column dragdrop-drag-handle">
+					<img src="{$basePath}/css/certificates/admin/icons.png" alt="#">
+				</span>
+				<div class="column fields">
 					{pair paramTypes-$id-label}
 					{pair paramTypes-$id-paramTypeId}
 				</div>
-				<div class="column">
+				<div class="column fields">
 					{pair paramTypes-$id-name}
 					<div class="required-field">{pair paramTypes-$id-required}</div>
 				</div>

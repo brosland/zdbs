@@ -25,6 +25,11 @@ class CertificateTypePresenter extends \Brosland\Application\UI\SecurityPresente
 
 		$this->certificateTypeDao = $this->context->getService('certificates.certificateTypeDao');
 	}
+	
+	public function actionList()
+	{
+		throw new \Nette\Application\BadRequestException('Not supported yet.');
+	}
 
 	public function actionAdd()
 	{
@@ -65,51 +70,49 @@ class CertificateTypePresenter extends \Brosland\Application\UI\SecurityPresente
 
 	public function actionEdit()
 	{
-		$certificateTypeForm = $this['certificateTypeForm'];
+		throw new \Nette\Application\BadRequestException('Not supported yet.');
+//		$certificateTypeForm = $this['certificateTypeForm'];
 //		$certificateTypeForm['save']->onClick[] = callback($this, 'editCertificateType');
 	}
 
-	/**
-	 * @param SubmitButton $button
-	 */
-	public function editCertificateType(SubmitButton $button)
-	{
-		$values = $button->getForm()->getValues();
-
-		$this->certificateTypeEntity->setName($values->name)
-			->setCategory($values->category)
-			->setTemplate($values->template)
-			->setDescription($values->description);
-
-		$paramTypes = $this->certificateTypeDao->related('paramTypes')
-			->findAssoc(array('certificateType' => $this->certificateTypeEntity), 'id');
-
-		for ($i = 0; $i < count($values->paramTypes); $i++)
-		{
-			$paramType = $values->paramTypes[$i];
-
-//			if ()
-
-			$paramTypeEntity = new ParamTypeEntity($paramType->name, $paramType->label, $paramType->paramTypeId, $this->certificateTypeEntity);
-			$paramTypeEntity->setOrder($i)
-				->setDescription($paramType->description)
-				->setRequired($paramType->required);
-
-			$this->certificateTypeEntity->getParamTypes()->add($paramTypeEntity);
-		}
-
-		$certificateType->setDescription($description);
-
-		$this->flashMessage('Typ certifikátu bol úspešne pridaný.', 'success');
-		$this->redirect('list');
-	}
+//	/**
+//	 * @param SubmitButton $button
+//	 */
+//	public function editCertificateType(SubmitButton $button)
+//	{
+//		$values = $button->getForm()->getValues();
+//
+//		$this->certificateTypeEntity->setName($values->name)
+//			->setCategory($values->category)
+//			->setTemplate($values->template)
+//			->setDescription($values->description);
+//
+//		$paramTypes = $this->certificateTypeDao->related('paramTypes')
+//			->findAssoc(array('certificateType' => $this->certificateTypeEntity), 'id');
+//
+//		for ($i = 0; $i < count($values->paramTypes); $i++)
+//		{
+//			$paramType = $values->paramTypes[$i];
+//
+//			$paramTypeEntity = new ParamTypeEntity($paramType->name, $paramType->label, $paramType->paramTypeId, $this->certificateTypeEntity);
+//			$paramTypeEntity->setOrder($i)
+//				->setDescription($paramType->description)
+//				->setRequired($paramType->required);
+//
+//			$this->certificateTypeEntity->getParamTypes()->add($paramTypeEntity);
+//		}
+//
+//		$certificateType->setDescription($description);
+//
+//		$this->flashMessage('Typ certifikátu bol úspešne pridaný.', 'success');
+//		$this->redirect('list');
+//	}
 
 	/**
 	 * @return CertificateTypeForm
 	 */
 	protected function createComponentCertificateTypeForm()
 	{
-		$form = new CertificateTypeForm($this->certificateTypeDao);
-		return $form;
+		return new CertificateTypeForm($this->certificateTypeDao);
 	}
 }
