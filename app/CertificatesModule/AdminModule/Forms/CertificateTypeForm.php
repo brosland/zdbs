@@ -1,7 +1,8 @@
 <?php
 namespace CertificatesModule\AdminModule\Forms;
 
-use CertificatesModule\Models\ParamType\ParamType,
+use CertificatesModule\Models\CertificateType\CertificateTypeEntity,
+	CertificatesModule\Models\ParamType\ParamType,
 	Kdyby\Doctrine\EntityDao,
 	Nette\Application\IPresenter;
 
@@ -21,12 +22,14 @@ class CertificateTypeForm extends \Brosland\Application\UI\EntityForm
 
 	/**
 	 * @param EntityDao $certificateTypeDao
+	 * @param CertificateTypeEntity $certificateTypeEntity
 	 */
-	public function __construct(EntityDao $certificateTypeDao)
+	public function __construct(EntityDao $certificateTypeDao, CertificateTypeEntity $certificateTypeEntity = NULL)
 	{
 		parent::__construct();
 
 		$this->certificateTypeDao = $certificateTypeDao;
+		$this->entity = $certificateTypeEntity;
 	}
 
 	/**
@@ -46,7 +49,7 @@ class CertificateTypeForm extends \Brosland\Application\UI\EntityForm
 				$name = $control->getValue();
 				return $entity !== NULL && $name === $entity->getName()
 					|| !$certificateTypeDao->findOneBy(array('name' => $name));
-			});
+			}, 'Typ certifikátu s rovnakým názvom už existuje.');
 		$this->addTextArea('description', 'Popis');
 		$this->addTextArea('template', 'Šablóna výpisu detailu');
 		$this->addEntitySelect('category', 'Kategória', NULL, 'name')
@@ -58,7 +61,6 @@ class CertificateTypeForm extends \Brosland\Application\UI\EntityForm
 
 		$this->addGroup('Parametre certifikátu');
 		$replicator = $this->addDynamic('paramTypes', function($paramType) {
-			$paramType->addHidden('order');
 			$paramType->addText('name', 'Názov', 64, 255)
 				->setRequired();
 			$paramType->addText('label', 'Názov parametra', 64, 255)
@@ -87,5 +89,10 @@ class CertificateTypeForm extends \Brosland\Application\UI\EntityForm
 
 		$this->setCurrentGroup();
 		$this->addSubmit('save', 'Ulož');
+		
+		if ($this->entity)
+		{
+			$this->bindEntity($this->entity);
+		}
 	}
 }

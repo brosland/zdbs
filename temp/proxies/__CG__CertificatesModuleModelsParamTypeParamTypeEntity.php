@@ -94,10 +94,10 @@ class ParamTypeEntity extends \CertificatesModule\Models\ParamType\ParamTypeEnti
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', 'name', 'label', 'order', 'required', 'paramTypeId', 'certificateType', 'id');
+            return array('__isInitialized__', 'name', 'label', 'ordering', 'required', 'paramTypeId', 'certificateType', 'id');
         }
 
-        return array('__isInitialized__', 'name', 'label', 'order', 'required', 'paramTypeId', 'certificateType', 'id');
+        return array('__isInitialized__', 'name', 'label', 'ordering', 'required', 'paramTypeId', 'certificateType', 'id');
     }
 
     /**
@@ -250,23 +250,23 @@ class ParamTypeEntity extends \CertificatesModule\Models\ParamType\ParamTypeEnti
     /**
      * {@inheritDoc}
      */
-    public function getOrder()
+    public function getOrdering()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOrder', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOrdering', array());
 
-        return parent::getOrder();
+        return parent::getOrdering();
     }
 
     /**
      * {@inheritDoc}
      */
-    public function setOrder($order)
+    public function setOrdering($ordering)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOrder', array($order));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOrdering', array($ordering));
 
-        return parent::setOrder($order);
+        return parent::setOrdering($ordering);
     }
 
     /**

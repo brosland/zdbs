@@ -18,7 +18,7 @@ class RouterFactory
 		
 		// Certificates-admin module
 		$router[] = $certificatesAdminRouter = new RouteList('Certificates:Admin');
-		$certificatesAdminRouter[] = new Route('certificates/admin/<presenter>[/<action>]');
+		$certificatesAdminRouter[] = new Route('certificates/admin/<presenter>[/<action=list>]');
 		$certificatesAdminRouter[] = new Route('certificates/admin/<presenter>/<action>[/<id [0-9]+>]');
 
 		// Certificates module

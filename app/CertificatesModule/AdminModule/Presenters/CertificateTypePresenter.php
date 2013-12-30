@@ -55,14 +55,14 @@ class CertificateTypePresenter extends \Brosland\Application\UI\SecurityPresente
 			$paramType = $values->paramTypes[$i];
 			$paramTypeEntity = new ParamTypeEntity($paramType->name,
 				$paramType->label, $paramType->paramTypeId, $this->certificateTypeEntity);
-			$paramTypeEntity->setOrder($i)
-				->setDescription($paramType->description)
+			$paramTypeEntity->setOrdering($i)
 				->setRequired($paramType->required);
 
 			$this->certificateTypeEntity->getParamTypes()->add($paramTypeEntity);
 		}
 
 		$this->certificateTypeDao->save($this->certificateTypeEntity);
+		$this->certificateTypeDao->getEntityManager()->flush();
 
 		$this->flashMessage('Typ certifikátu bol úspešne pridaný.', 'success');
 		$this->redirect('list');
@@ -113,6 +113,6 @@ class CertificateTypePresenter extends \Brosland\Application\UI\SecurityPresente
 	 */
 	protected function createComponentCertificateTypeForm()
 	{
-		return new CertificateTypeForm($this->certificateTypeDao);
+		return new CertificateTypeForm($this->certificateTypeDao, $this->certificateTypeEntity);
 	}
 }

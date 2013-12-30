@@ -250,12 +250,12 @@ class BooleanParamEntity extends \CertificatesModule\Models\Param\BooleanParamEn
     /**
      * {@inheritDoc}
      */
-    public function getCertficateType()
+    public function getCertificate()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCertficateType', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCertificate', array());
 
-        return parent::getCertficateType();
+        return parent::getCertificate();
     }
 
     /**
