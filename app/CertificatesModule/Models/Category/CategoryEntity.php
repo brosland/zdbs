@@ -56,10 +56,12 @@ class CategoryEntity extends \Brosland\Model\Entity
 
 	/**
 	 * @param string $name
+	 * @return self
 	 */
 	public function setName($name)
 	{
 		$this->name = $name;
+		return $this;
 	}
 	
 	/**
@@ -72,10 +74,12 @@ class CategoryEntity extends \Brosland\Model\Entity
 
 	/**
 	 * @param string $codePrefix
+	 * @return self
 	 */
 	public function setCodePrefix($codePrefix)
 	{
 		$this->codePrefix = $codePrefix;
+		return $this;
 	}
 	
 	/**
@@ -88,10 +92,12 @@ class CategoryEntity extends \Brosland\Model\Entity
 
 	/**
 	 * @param string $description
+	 * @return self
 	 */
 	public function setDescription($description)
 	{
 		$this->description = $description;
+		return $this;
 	}
 	
 	/**

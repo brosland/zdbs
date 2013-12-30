@@ -50,51 +50,44 @@ class CategoryPresenter extends \Brosland\Application\UI\SecurityPresenter
 		$this->redirect('list');
 	}
 
-	public function actionEdit()
+	/**
+	 * @var int $id
+	 */
+	public function actionEdit($id)
 	{
+		$this->categoryEntity = $this->categoryDao->find($id);
+		
+		if (!$this->categoryEntity)
+		{
+			throw new \Nette\Application\BadRequestException('Category not found.');
+		}
+		
 		$categoryForm = $this['categoryForm'];
+		$categoryForm['save']->onClick[] = callback($this, 'editCategory');
 	}
 
-	///**
-	// * @param SubmitButton $button
-	// */
-//	public function editCertificateType(SubmitButton $button)
-//	{
-//		$values = $button->getForm()->getValues();
-//
-//		$this->certificateTypeEntity->setName($values->name)
-//			->setCategory($values->category)
-//			->setTemplate($values->template)
-//			->setDescription($values->description);
-//
-//		$paramTypes = $this->certificateTypeDao->related('paramTypes')
-//			->findAssoc(array('certificateType' => $this->certificateTypeEntity), 'id');
-//
-//		for ($i = 0; $i < count($values->paramTypes); $i++)
-//		{
-//			$paramType = $values->paramTypes[$i];
-//
-////			if ()
-//
-//			$paramTypeEntity = new ParamTypeEntity($paramType->name, $paramType->label, $paramType->paramTypeId, $this->certificateTypeEntity);
-//			$paramTypeEntity->setOrder($i)
-//				->setDescription($paramType->description)
-//				->setRequired($paramType->required);
-//
-//			$this->certificateTypeEntity->getParamTypes()->add($paramTypeEntity);
-//		}
-//
-//		$certificateType->setDescription($description);
-//
-//		$this->flashMessage('Typ certifikátu bol úspešne pridaný.', 'success');
-//		$this->redirect('list');
-//	}
+	/**
+	 * @param SubmitButton $button
+	 */
+	public function editCategory(SubmitButton $button)
+	{
+		$values = $button->getForm()->getValues();
+
+		$this->categoryEntity->setName($values->name)
+			->setCodePrefix($values->codePrefix)
+			->setDescription($values->description);
+
+		$this->categoryDao->save();
+
+		$this->flashMessage('Kategória certifikátov bola úspešne pridaná.', 'success');
+		$this->redirect('list');
+	}
 
 	/**
 	 * @return CategoryForm
 	 */
 	protected function createComponentCategoryForm()
 	{
-		return new CategoryForm($this->categoryDao);
+		return new CategoryForm($this->categoryDao, $this->categoryEntity);
 	}
 }
