@@ -28,7 +28,7 @@ class CategoryEntity extends \Brosland\Model\Entity
 	/**
 	 * @ORM\OneToMany(
 	 * 	targetEntity="CertificatesModule\Models\ParamType\ParamTypeEntity",
-	 * 	fetch="EXTRA_LAZY", cascade="ALL", mappedBy="certifiateTypeCategory"
+	 * 	fetch="EXTRA_LAZY", cascade="ALL", mappedBy="certificateTypeCategory"
 	 * )
 	 * @var ArrayCollection
 	 */

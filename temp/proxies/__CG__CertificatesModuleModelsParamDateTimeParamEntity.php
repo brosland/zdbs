@@ -217,7 +217,7 @@ class DateTimeParamEntity extends \CertificatesModule\Models\Param\DateTimeParam
     /**
      * {@inheritDoc}
      */
-    public function setValue(\Nette\DateTime $value)
+    public function setValue(\DateTime $value)
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setValue', array($value));
@@ -239,12 +239,12 @@ class DateTimeParamEntity extends \CertificatesModule\Models\Param\DateTimeParam
     /**
      * {@inheritDoc}
      */
-    public function getCertficateType()
+    public function getCertificate()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCertficateType', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCertificate', array());
 
-        return parent::getCertficateType();
+        return parent::getCertificate();
     }
 
     /**

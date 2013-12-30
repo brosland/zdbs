@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 <?php //netteCache[01]000300a:3:{s:4:"time";s:21:"0.65008700 1388412437";s:9:"callbacks";a:1:{i:0;a:3:{i:0;a:2:{i:0;s:19:"Nette\Caching\Cache";i:1;s:9:"checkFile";}i:1;s:107:"/Applications/XAMPP/xamppfiles/htdocs/zdbs/zdbs/app/CertificatesModule/Models/ParamType/ParamTypeEntity.php";i:2;i:1388412226;}}s:10:"serialized";b:1;}?>a:1:{i:0;O:27:"Doctrine\ORM\Mapping\Column":9:{s:4:"name";N;s:4:"type";s:6:"string";s:6:"length";N;s:9:"precision";i:0;s:5:"scale";i:0;s:6:"unique";b:0;s:8:"nullable";b:0;s:7:"options";a:0:{}s:16:"columnDefinition";N;}}
+=======
+<?php //netteCache[01]000271a:3:{s:4:"time";s:21:"0.63919900 1388414280";s:9:"callbacks";a:1:{i:0;a:3:{i:0;a:2:{i:0;s:19:"Nette\Caching\Cache";i:1;s:9:"checkFile";}i:1;s:79:"E:\Work\htdocs\zdbs\app\CertificatesModule\Models\ParamType\ParamTypeEntity.php";i:2;i:1388414120;}}s:10:"serialized";b:1;}?>a:1:{i:0;O:27:"Doctrine\ORM\Mapping\Column":9:{s:4:"name";N;s:4:"type";s:6:"string";s:6:"length";N;s:9:"precision";i:0;s:5:"scale";i:0;s:6:"unique";b:0;s:8:"nullable";b:0;s:7:"options";a:0:{}s:16:"columnDefinition";N;}}
+>>>>>>> 30fa21622c3fe3eaca4f060f3bdc6d3ca13edd15

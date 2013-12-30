@@ -1,8 +1,8 @@
 <?php
 namespace CertificatesModule\Models\Param;
 
-use CertificatesModule\Models\CertificateType\CertificateTypeEntity,
-	Models\ParamType\ParamTypeEntity,
+use CertificatesModule\Models\Certificate\CertificateEntity,
+	CertificatesModule\Models\ParamType\ParamTypeEntity,
 	Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -58,10 +58,10 @@ abstract class ParamEntity extends \Brosland\Model\Entity
 	}
 
 	/**
-	 * @return CertificateTypeEntity
+	 * @return CertificateEntity
 	 */
-	public function getCertficateType()
+	public function getCertificate()
 	{
-		return $this->certificateType;
+		return $this->certificate;
 	}
 }

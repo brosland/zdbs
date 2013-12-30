@@ -38,9 +38,9 @@ class CertificateTypeEntity extends \Brosland\Model\Entity
 	/**
 	 * @ORM\OneToMany(
 	 * 	targetEntity="CertificatesModule\Models\ParamType\ParamTypeEntity",
-	 * 	fetch="EXTRA_LAZY", cascade="ALL", mappedBy="certifiateType"
+	 * 	fetch="EXTRA_LAZY", cascade="ALL", mappedBy="certificateType"
 	 * )
-	 * @ORM\OrderBy({"order"="ASC"})
+	 * @ORM\OrderBy({"ordering"="ASC"})
 	 * @var ArrayCollection
 	 */
 	private $paramTypes;

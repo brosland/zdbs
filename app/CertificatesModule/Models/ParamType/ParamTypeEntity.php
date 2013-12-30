@@ -24,7 +24,7 @@ class ParamTypeEntity extends \Brosland\Model\Entity
 	 * @ORM\Column(type="integer")
 	 * @var int
 	 */
-	private $order = 0;
+	private $ordering = 0;
 	/**
 	 * @ORM\Column(type="boolean")
 	 * @var string
@@ -99,18 +99,18 @@ class ParamTypeEntity extends \Brosland\Model\Entity
 	/**
 	 * @return int
 	 */
-	public function getOrder()
+	public function getOrdering()
 	{
-		return $this->order;
+		return $this->ordering;
 	}
 
 	/**
-	 * @param int $order
+	 * @param int $ordering
 	 * @return self
 	 */
-	public function setOrder($order)
+	public function setOrdering($ordering)
 	{
-		$this->order = $order;
+		$this->ordering = (int) $ordering;
 		return $this;
 	}
 
@@ -146,7 +146,7 @@ class ParamTypeEntity extends \Brosland\Model\Entity
 	 */
 	public function setParamTypeId($paramTypeId)
 	{
-		$this->paramTypeId = $paramTypeId;
+		$this->paramTypeId = (int) $paramTypeId;
 		return $this;
 	}
 

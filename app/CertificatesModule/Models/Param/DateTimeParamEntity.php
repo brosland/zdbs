@@ -3,7 +3,7 @@ namespace CertificatesModule\Models\Param;
 
 use CertificatesModule\Models\Certificate\CertificateEntity,
 	CertificatesModule\Models\ParamType\ParamTypeEntity,
-	Nette\DateTime,
+	DateTime,
 	Doctrine\ORM\Mapping as ORM;
 
 /**

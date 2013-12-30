@@ -94,10 +94,10 @@ class CertificateEntity extends \CertificatesModule\Models\Certificate\Certifica
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', 'certificateType', 'code', 'created', 'expiration', 'id');
+            return array('__isInitialized__', 'certificateType', 'code', 'created', 'expiration', 'params', 'id');
         }
 
-        return array('__isInitialized__', 'certificateType', 'code', 'created', 'expiration', 'id');
+        return array('__isInitialized__', 'certificateType', 'code', 'created', 'expiration', 'params', 'id');
     }
 
     /**
@@ -289,6 +289,17 @@ class CertificateEntity extends \CertificatesModule\Models\Certificate\Certifica
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setExpiration', array($expiration));
 
         return parent::setExpiration($expiration);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getParams()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getParams', array());
+
+        return parent::getParams();
     }
 
     /**

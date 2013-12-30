@@ -2,6 +2,7 @@
 namespace CertificatesModule\Models\Certificate;
 
 use CertificatesModule\Models\CertificateType\CertificateTypeEntity,
+	Doctrine\Common\Collections\ArrayCollection,
 	Doctrine\ORM\Mapping as ORM,
 	Nette\DateTime;
 
@@ -11,6 +12,8 @@ use CertificatesModule\Models\CertificateType\CertificateTypeEntity,
  */
 class CertificateEntity extends \Brosland\Model\Entity
 {
+	const CODE_LENGTH = 8;
+	
 	/**
 	 * @ORM\ManyToOne(
 	 * 	targetEntity="CertificatesModule\Models\CertificateType\CertificateTypeEntity",
@@ -34,6 +37,15 @@ class CertificateEntity extends \Brosland\Model\Entity
 	 * @var DateTime
 	 */
 	private $expiration = NULL;
+	/**
+	 * @ORM\OneToMany(
+	 *	targetEntity="CertificatesModule\Models\Param\ParamEntity",
+	 *	mappedBy="certificate", fetch="EAGER", cascade="ALL"
+	 * )
+	 * @ORM\OrderBy({"published"="DESC"})
+	 * @var ArrayCollection
+	 */
+	private $params;
 
 
 	/**
@@ -45,6 +57,7 @@ class CertificateEntity extends \Brosland\Model\Entity
 		$this->certificateType = $certificateType;
 		$this->code = $code;
 		$this->created = new DateTime();
+		$this->params = new ArrayCollection();
 	}
 
 	/**
@@ -115,5 +128,13 @@ class CertificateEntity extends \Brosland\Model\Entity
 	{
 		$this->expiration = $expiration;
 		return $this;
+	}
+	
+	/**
+	 * @return ArrayCollection
+	 */
+	public function getParams()
+	{
+		return $this->params;
 	}
 }

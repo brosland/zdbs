@@ -1,0 +1,16 @@
+{block #head}
+{include #parent}
+<script type="text/javascript" src="{$basePath}/js/jquery.brosland.forms.js"></script>
+<script type="text/javascript">
+	$(function() {
+		$('input.datepicker').each(function() {
+			$(this).datepicker({ dateFormat: $(this).data('datepicker-dateformat')});
+		});
+	});
+</script>
+{/block}
+
+{block content}
+<h2>{if $control->action === 'add'}Vytvorenie{else}Editácia{/if} certifikátu</h2>
+{control certificateForm}
+{/block}
