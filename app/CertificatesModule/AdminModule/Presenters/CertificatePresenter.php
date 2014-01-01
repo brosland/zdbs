@@ -23,16 +23,12 @@ class CertificatePresenter extends \Brosland\Application\UI\SecurityPresenter
 	 * @var EntityDao
 	 */
 	private $certificateDao;
-	/**
-	 * @var CertificateEntity
-	 */
-	private $certificateEntity = NULL;
 
 
 	public function startup()
 	{
 		parent::startup();
-		
+
 		$this->certificateTypeDao = $this->context->getService('certificates.certificateTypeDao');
 		$this->certificateDao = $this->context->getService('certificates.certificateDao');
 	}
@@ -43,12 +39,12 @@ class CertificatePresenter extends \Brosland\Application\UI\SecurityPresenter
 	public function actionAdd($certificateTypeId)
 	{
 		$this->certificateTypeEntity = $this->certificateTypeDao->find($certificateTypeId);
-		
+
 		if (!$this->certificateTypeEntity)
 		{
 			throw new \Nette\Application\BadRequestException('Certificate type not found.', 404);
 		}
-		
+
 		$this->setView('edit');
 
 		$certificateForm = $this['certificateForm'];
@@ -61,90 +57,99 @@ class CertificatePresenter extends \Brosland\Application\UI\SecurityPresenter
 	public function addCertificate(SubmitButton $button)
 	{
 		$values = $button->getForm()->getValues();
-		
-		do {
+
+		do
+		{
 			$code = \Nette\Utils\Strings::random(8);
-		} while($this->certificateDao->findOneBy(array('code' => $code)));
-		
-		$this->certificateEntity = new CertificateEntity(
-			$this->certificateTypeEntity, $code);
-		$this->certificateEntity->setExpiration($values->expiration);
-		
+		}
+		while ($this->certificateDao->findOneBy(array('code' => $code)));
+
+		$certificateEntity = new CertificateEntity($this->certificateTypeEntity, $code);
+		$certificateEntity->setExpiration($values->expiration);
+
 		foreach ($this->certificateTypeEntity->getParamTypes() as $paramType)
 		{
 			$param = NULL;
 			$paramName = $paramType->getName();
-			
+
 			switch ($paramType->getParamTypeId())
-			{				
+			{
 				case ParamType::BOOLEAN:
 					$param = new \CertificatesModule\Models\Param\BooleanParamEntity(
-						$paramType, $this->certificateEntity, $values->params->{$paramName});
+						$paramType, $certificateEntity, $values->params->$paramName);
 					break;
 				case ParamType::INTEGER:
 					$param = new \CertificatesModule\Models\Param\IntegerParamEntity(
-						$paramType, $this->certificateEntity, $values->params->{$paramName});
+						$paramType, $certificateEntity, $values->params->$paramName);
 					break;
 				case ParamType::DOUBLE:
 					$param = new \CertificatesModule\Models\Param\DoubleParamEntity(
-						$paramType, $this->certificateEntity, $values->params->{$paramName});
+						$paramType, $certificateEntity, $values->params->$paramName);
 					break;
 				case ParamType::STRING:
 					$param = new \CertificatesModule\Models\Param\StringParamEntity(
-						$paramType, $this->certificateEntity, $values->params->{$paramName});
+						$paramType, $certificateEntity, $values->params->$paramName);
 					break;
 				case ParamType::TEXT:
 					$param = new \CertificatesModule\Models\Param\TextParamEntity(
-						$paramType, $this->certificateEntity, $values->params->{$paramName});
+						$paramType, $certificateEntity, $values->params->$paramName);
 					break;
 				case ParamType::DATETIME:
 					$param = new \CertificatesModule\Models\Param\DateTimeParamEntity(
-						$paramType, $this->certificateEntity, $values->params->{$paramName});
-					break;
+						$paramType, $certificateEntity, $values->params->$paramName);
 			}
-			
-			$this->certificateEntity->getParams()->add($param);
+
+			$certificateEntity->getParams()->add($param);
 		}
-		
-		$this->certificateDao->save($this->certificateEntity);
+
+		$this->certificateDao->save($certificateEntity);
 
 		$this->flashMessage('Certifikát bol úspešne pridaný.', 'success');
 		$this->redirect('list');
 	}
 
-//	/**
-//	 * @var int $id
-//	 */
-//	public function actionEdit($id)
-//	{
-//		$this->certificateEntity = $this->certificateDao->find($id);
-//		
-//		if (!$this->certificateEntity)
-//		{
-//			throw new \Nette\Application\BadRequestException('Certificate not found.');
-//		}
-//		
-//		$certificateForm = $this['certificateForm'];
-//		$certificateForm['save']->onClick[] = callback($this, 'editCertificate');
-//	}
-//
-//	/**
-//	 * @param SubmitButton $button
-//	 */
-//	public function editCertificate(SubmitButton $button)
-//	{
-//		$values = $button->getForm()->getValues();
-//
-//		$this->certificateEntity->setName($values->name)
-//			->setCodePrefix($values->codePrefix)
-//			->setDescription($values->description);
-//
-//		$this->certificateDao->save();
-//
-//		$this->flashMessage('Kategória certifikátov bola úspešne pridaná.', 'success');
-//		$this->redirect('list');
-//	}
-	
+	/**
+	 * @var int $id
+	 */
+	public function actionEdit($id)
+	{
+		$certificateEntity = $this->certificateDao->find($id);
+		
+		if (!$certificateEntity)
+		{
+			throw new \Nette\Application\BadRequestException('Certificate not found.');
+		}
+
+		$this->certificateTypeEntity = $certificateEntity->getCertificateType();
+
+		$certificateForm = $this['certificateForm'];
+		$certificateForm->bindEntity($certificateEntity);
+		$certificateForm['save']->onClick[] = callback($this, 'editCertificate');
+	}
+
+	/**
+	 * @param SubmitButton $button
+	 */
+	public function editCertificate(SubmitButton $button)
+	{
+		$values = $button->getForm()->getValues();
+		$certificateEntity = $button->getForm()->getEntity()
+			->setExpiration($values->expiration);
+
+		foreach ($certificateEntity->getParams() as $param)
+		/* @var $param \CertificatesModule\Models\Param\ParamEntity */
+		{
+			$name = $param->getParamType()->getName();
+			$param->setValue($values->params->$name);
+		}
+		
+		$this->certificateDao->save($certificateEntity);
+		$this->certificateDao->getEntityManager()->flush();
+
+		$this->flashMessage('Certifikát bol úspešne upravený.', 'success');
+		$this->redirect('list');
+	}
+
 	/**
 	 * @return CertificateTypeSelectForm
 	 */
@@ -155,15 +160,15 @@ class CertificatePresenter extends \Brosland\Application\UI\SecurityPresenter
 			$certificateType = $form->getValues()->certificateType;
 			$form->getPresenter()->redirect('add', $certificateType->getId());
 		});
-		
+
 		return $form;
 	}
-	
+
 	/**
 	 * @return CertificateForm
 	 */
 	protected function createComponentCertificateForm()
 	{
-		return new CertificateForm($this->certificateTypeEntity, $this->certificateDao, $this->certificateEntity);
+		return new CertificateForm($this->certificateTypeEntity, $this->certificateDao);
 	}
 }

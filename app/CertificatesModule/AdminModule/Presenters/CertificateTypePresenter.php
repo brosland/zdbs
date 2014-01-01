@@ -13,10 +13,6 @@ class CertificateTypePresenter extends \Brosland\Application\UI\SecurityPresente
 	 * @var EntityDao
 	 */
 	private $certificateTypeDao;
-	/**
-	 * @var CertificateTypeEntity
-	 */
-	private $certificateTypeEntity = NULL;
 
 
 	public function startup()
@@ -46,22 +42,22 @@ class CertificateTypePresenter extends \Brosland\Application\UI\SecurityPresente
 	{
 		$values = $button->getForm()->getValues();
 
-		$this->certificateTypeEntity = new CertificateTypeEntity(
+		$certificateTypeEntity = new CertificateTypeEntity(
 			$values->category, $values->name, $values->template);
-		$this->certificateTypeEntity->setDescription($values->description);
+		$certificateTypeEntity->setDescription($values->description);
 
 		for ($i = 0; $i < count($values->paramTypes); $i++)
 		{
 			$paramType = $values->paramTypes[$i];
-			$paramTypeEntity = new ParamTypeEntity($paramType->name,
-				$paramType->label, $paramType->paramTypeId, $this->certificateTypeEntity);
+			$paramTypeEntity = new ParamTypeEntity($paramType->name, $paramType->label,
+				$paramType->paramTypeId, $this->certificateTypeEntity);
 			$paramTypeEntity->setOrdering($i)
 				->setRequired($paramType->required);
 
-			$this->certificateTypeEntity->getParamTypes()->add($paramTypeEntity);
+			$certificateTypeEntity->getParamTypes()->add($paramTypeEntity);
 		}
 
-		$this->certificateTypeDao->save($this->certificateTypeEntity);
+		$this->certificateTypeDao->save($certificateTypeEntity);
 		$this->certificateTypeDao->getEntityManager()->flush();
 
 		$this->flashMessage('Typ certifikátu bol úspešne pridaný.', 'success');
@@ -113,6 +109,6 @@ class CertificateTypePresenter extends \Brosland\Application\UI\SecurityPresente
 	 */
 	protected function createComponentCertificateTypeForm()
 	{
-		return new CertificateTypeForm($this->certificateTypeDao, $this->certificateTypeEntity);
+		return new CertificateTypeForm($this->certificateTypeDao);
 	}
 }

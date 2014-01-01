@@ -1,9 +1,9 @@
 <?php
 namespace CertificatesModule\AdminModule\Forms;
 
-use CertificatesModule\Models\Category\CategoryEntity,
-	Kdyby\Doctrine\EntityDao,
-	Nette\Application\IPresenter;
+use Kdyby\Doctrine\EntityDao,
+	Nette\Application\IPresenter,
+	Nette\Forms\Controls\BaseControl;
 
 class CategoryForm extends \Brosland\Application\UI\EntityForm
 {
@@ -15,14 +15,12 @@ class CategoryForm extends \Brosland\Application\UI\EntityForm
 
 	/**
 	 * @param EntityDao $categoryDao
-	 * @param CategoryEntity $categoryEntity
 	 */
-	public function __construct(EntityDao $categoryDao, CategoryEntity $categoryEntity = NULL)
+	public function __construct(EntityDao $categoryDao)
 	{
 		parent::__construct();
 
 		$this->categoryDao = $categoryDao;
-		$this->entity = $categoryEntity;
 	}
 
 	/**
@@ -31,31 +29,26 @@ class CategoryForm extends \Brosland\Application\UI\EntityForm
 	protected function configure(IPresenter $presenter)
 	{
 		$categoryDao = $this->categoryDao;
-		$entity = $this->entity;
-		
+
 		$this->addText('name', 'Názov', 64, 255)
 			->setRequired()
-			->addRule(function($control) use($categoryDao, $entity) {
+			->addRule(function(BaseControl $control) use($categoryDao) {
+				$form = $control->getForm();
 				$name = $control->getValue();
-				return $entity !== NULL && $name === $entity->getName()
+				return $form->hasEntity() && $name === $form->getEntity()->getName()
 					|| !$categoryDao->findOneBy(array('name' => $name));
 			}, 'Kategória s rovnakým názvom už existuje.');
-			
+
 		$this->addText('codePrefix', 'Prefix', 64, 64)
 			->setRequired()
-			->addRule(function($control) use($categoryDao, $entity) {
+			->addRule(function(BaseControl $control) use($categoryDao) {
+				$form = $control->getForm();
 				$codePrefix = $control->getValue();
-				return $entity !== NULL && $codePrefix === $entity->getCodePrefix()
+				return $form->hasEntity() && $codePrefix === $form->getEntity()->getCodePrefix()
 					|| !$categoryDao->findOneBy(array('codePrefix' => $codePrefix));
 			}, 'Kategória s rovnakým prefixom už existuje.');	
-			
-		$this->addTextArea('description', 'Popis');
 
+		$this->addTextArea('description', 'Popis');
 		$this->addSubmit('save', 'Ulož');
-		
-		if ($this->entity)
-		{
-			$this->bindEntity($this->entity);
-		}
 	}
 }

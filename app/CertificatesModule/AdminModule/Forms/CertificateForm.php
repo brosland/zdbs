@@ -1,11 +1,11 @@
 <?php
 namespace CertificatesModule\AdminModule\Forms;
 
-use CertificatesModule\Models\CertificateType\CertificateTypeEntity,
-	CertificatesModule\Models\Certificate\CertificateEntity,
+use Brosland\Model\IEntity,
+	CertificatesModule\Models\CertificateType\CertificateTypeEntity,
 	CertificatesModule\Models\ParamType\ParamType,
-	Kdyby\Doctrine\EntityDao,
-	Nette\Application\IPresenter;
+	Nette\Application\IPresenter,
+	Nette\Forms\Container;
 
 class CertificateForm extends \Brosland\Application\UI\EntityForm
 {
@@ -13,25 +13,16 @@ class CertificateForm extends \Brosland\Application\UI\EntityForm
 	 * @var CertificateTypeEntity
 	 */
 	private $certificateTypeEntity;
-	/**
-	 * @var EntityDao
-	 */
-	private $certificateDao;
 
 
 	/**
 	 * @param CertificateTypeEntity $certificateTypeEntity
-	 * @param EntityDao $certificateDao
-	 * @param CertificateEntity $certificateEntity
 	 */
-	public function __construct(CertificateTypeEntity $certificateTypeEntity,
-		EntityDao $certificateDao, CertificateEntity $certificateEntity = NULL)
+	public function __construct(CertificateTypeEntity $certificateTypeEntity)
 	{
 		parent::__construct();
 
 		$this->certificateTypeEntity = $certificateTypeEntity;
-		$this->certificateDao = $certificateDao;
-		$this->entity = $certificateEntity;
 	}
 
 	/**
@@ -41,17 +32,15 @@ class CertificateForm extends \Brosland\Application\UI\EntityForm
 	{
 		$this->addGroup('Certifikát');
 		$this->addDatePicker('expiration', 'Dátum expirácie');
-		
+
 		$this->addGroup('Parametre certifikátu');
-		
-		$paramTypes = $this->certificateTypeEntity->getParamTypes();
 		$params = $this->addContainer('params');
-		
-		foreach ($paramTypes as $paramType)
+
+		foreach ($this->certificateTypeEntity->getParamTypes() as $paramType)
 		/* @var $paramType \CertificatesModule\Models\ParamType\ParamTypeEntity */
 		{
 			$control = NULL;
-			
+
 			switch ($paramType->getParamTypeId())
 			{
 				case ParamType::BOOLEAN:
@@ -75,15 +64,29 @@ class CertificateForm extends \Brosland\Application\UI\EntityForm
 					$control = $params->addDatePicker($paramType->getName(), $paramType->getLabel());
 					break;
 			}
-			
-			$control->setOption('id', $paramType->getId());
-			
+
 			if ($paramType->isRequired())
 			{
 				$control->setRequired();
 			}
 		}
-		
+
 		$this->addSubmit('save', 'Ulož');
+	}
+
+	/**
+	 * @param IEntity $entity
+	 * @param Container $container
+	 */
+	public function bindEntity(IEntity $entity, Container $container = NULL)
+	{
+		parent::bindEntity($entity, $container);
+
+		$params = $this->getComponent('params');
+
+		foreach ($entity->getParams() as $param)
+		{
+			$params[$param->getParamType()->getName()]->setDefaultValue($param->getValue());
+		}
 	}
 }

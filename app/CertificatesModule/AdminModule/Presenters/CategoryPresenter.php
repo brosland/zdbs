@@ -12,10 +12,6 @@ class CategoryPresenter extends \Brosland\Application\UI\SecurityPresenter
 	 * @var EntityDao
 	 */
 	private $categoryDao;
-	/**
-	 * @var CategoryEntity
-	 */
-	private $categoryEntity = NULL;
 
 
 	public function startup()
@@ -40,11 +36,10 @@ class CategoryPresenter extends \Brosland\Application\UI\SecurityPresenter
 	{
 		$values = $button->getForm()->getValues();
 
-		$this->categoryEntity = new CategoryEntity(
-			$values->name, $values->codePrefix);
-		$this->categoryEntity->setDescription($values->description);
+		$categoryEntity = new CategoryEntity($values->name, $values->codePrefix);
+		$categoryEntity->setDescription($values->description);
 
-		$this->categoryDao->save($this->categoryEntity);
+		$this->categoryDao->save($categoryEntity);
 
 		$this->flashMessage('Kategória certifikátov bola úspešne pridaná.', 'success');
 		$this->redirect('list');
@@ -55,14 +50,15 @@ class CategoryPresenter extends \Brosland\Application\UI\SecurityPresenter
 	 */
 	public function actionEdit($id)
 	{
-		$this->categoryEntity = $this->categoryDao->find($id);
+		$categoryEntity = $this->categoryDao->find($id);
 		
-		if (!$this->categoryEntity)
+		if (!$categoryEntity)
 		{
 			throw new \Nette\Application\BadRequestException('Category not found.');
 		}
 		
 		$categoryForm = $this['categoryForm'];
+		$categoryForm->bindEntity($categoryEntity);
 		$categoryForm['save']->onClick[] = callback($this, 'editCategory');
 	}
 
@@ -72,14 +68,14 @@ class CategoryPresenter extends \Brosland\Application\UI\SecurityPresenter
 	public function editCategory(SubmitButton $button)
 	{
 		$values = $button->getForm()->getValues();
-
-		$this->categoryEntity->setName($values->name)
+		$categoryEntity = $button->getForm()->getEntity()
+			->setName($values->name)
 			->setCodePrefix($values->codePrefix)
 			->setDescription($values->description);
 
-		$this->categoryDao->save();
+		$this->categoryDao->save($categoryEntity);
 
-		$this->flashMessage('Kategória certifikátov bola úspešne pridaná.', 'success');
+		$this->flashMessage('Kategória certifikátov bola úspešne upravená.', 'success');
 		$this->redirect('list');
 	}
 
@@ -88,6 +84,6 @@ class CategoryPresenter extends \Brosland\Application\UI\SecurityPresenter
 	 */
 	protected function createComponentCategoryForm()
 	{
-		return new CategoryForm($this->categoryDao, $this->categoryEntity);
+		return new CategoryForm($this->categoryDao);
 	}
 }

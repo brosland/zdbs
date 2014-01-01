@@ -40,9 +40,8 @@ class CertificateEntity extends \Brosland\Model\Entity
 	/**
 	 * @ORM\OneToMany(
 	 *	targetEntity="CertificatesModule\Models\Param\ParamEntity",
-	 *	mappedBy="certificate", fetch="EAGER", cascade="ALL"
+	 *	mappedBy="certificate", fetch="EAGER", cascade="ALL", indexBy="name"
 	 * )
-	 * @ORM\OrderBy({"published"="DESC"})
 	 * @var ArrayCollection
 	 */
 	private $params;

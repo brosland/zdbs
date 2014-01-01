@@ -1,9 +1,9 @@
 <?php
 namespace CertificatesModule\AdminModule\Forms;
 
-use CertificatesModule\Models\CertificateType\CertificateTypeEntity,
-	CertificatesModule\Models\ParamType\ParamType,
+use CertificatesModule\Models\ParamType\ParamType,
 	Kdyby\Doctrine\EntityDao,
+	Nette\Forms\Controls\BaseControl,
 	Nette\Application\IPresenter;
 
 class CertificateTypeForm extends \Brosland\Application\UI\EntityForm
@@ -22,14 +22,12 @@ class CertificateTypeForm extends \Brosland\Application\UI\EntityForm
 
 	/**
 	 * @param EntityDao $certificateTypeDao
-	 * @param CertificateTypeEntity $certificateTypeEntity
 	 */
-	public function __construct(EntityDao $certificateTypeDao, CertificateTypeEntity $certificateTypeEntity = NULL)
+	public function __construct(EntityDao $certificateTypeDao)
 	{
 		parent::__construct();
 
 		$this->certificateTypeDao = $certificateTypeDao;
-		$this->entity = $certificateTypeEntity;
 	}
 
 	/**
@@ -38,16 +36,16 @@ class CertificateTypeForm extends \Brosland\Application\UI\EntityForm
 	protected function configure(IPresenter $presenter)
 	{
 		$certificateTypeDao = $this->certificateTypeDao;
-		$entity = $this->entity;
 		
 		$this->getElementPrototype()->id = 'certificate-type-form';
 		
 		$this->addGroup('Certifikát');
 		$this->addText('name', 'Názov', 64, 255)
 			->setRequired()
-			->addRule(function($control) use($certificateTypeDao, $entity) {
+			->addRule(function(BaseControl $control) use($certificateTypeDao) {
+				$form = $control->getForm();
 				$name = $control->getValue();
-				return $entity !== NULL && $name === $entity->getName()
+				return $form->hasEntity() && $name === $form->getEntity()->getName()
 					|| !$certificateTypeDao->findOneBy(array('name' => $name));
 			}, 'Typ certifikátu s rovnakým názvom už existuje.');
 		$this->addTextArea('description', 'Popis');
@@ -89,10 +87,5 @@ class CertificateTypeForm extends \Brosland\Application\UI\EntityForm
 
 		$this->setCurrentGroup();
 		$this->addSubmit('save', 'Ulož');
-		
-		if ($this->entity)
-		{
-			$this->bindEntity($this->entity);
-		}
 	}
 }
