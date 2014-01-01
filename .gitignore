@@ -1,6 +1,9 @@
-nbproject/
-temp/
-log/
-libs/*
+/libs/*
 !/libs/brosland/
+!/libs/netterobots.txt
+/log/*
+!/log/.htaccess
+/nbproject/
+/temp/*
+/temp/.htaccess
 composer.lock
