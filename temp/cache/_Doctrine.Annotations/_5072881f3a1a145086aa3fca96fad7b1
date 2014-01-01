@@ -1,1 +1,5 @@
+<<<<<<< HEAD
+<?php //netteCache[01]000312a:3:{s:4:"time";s:21:"0.51400800 1388412437";s:9:"callbacks";a:1:{i:0;a:3:{i:0;a:2:{i:0;s:19:"Nette\Caching\Cache";i:1;s:9:"checkFile";}i:1;s:119:"/Applications/XAMPP/xamppfiles/htdocs/zdbs/zdbs/libs/composer/kdyby/doctrine/src/Kdyby/Doctrine/Entities/BaseEntity.php";i:2;i:1386942950;}}s:10:"serialized";b:1;}?>a:1:{i:0;O:37:"Doctrine\ORM\Mapping\MappedSuperclass":1:{s:15:"repositoryClass";N;}}
+=======
 <?php //netteCache[01]000283a:3:{s:4:"time";s:21:"0.02296900 1388413315";s:9:"callbacks";a:1:{i:0;a:3:{i:0;a:2:{i:0;s:19:"Nette\Caching\Cache";i:1;s:9:"checkFile";}i:1;s:91:"E:\Work\htdocs\zdbs\libs\composer\kdyby\doctrine\src\Kdyby\Doctrine\Entities\BaseEntity.php";i:2;i:1386942949;}}s:10:"serialized";b:1;}?>a:1:{i:0;O:37:"Doctrine\ORM\Mapping\MappedSuperclass":1:{s:15:"repositoryClass";N;}}
+>>>>>>> 30fa21622c3fe3eaca4f060f3bdc6d3ca13edd15

@@ -1,1 +1,5 @@
+<<<<<<< HEAD
+<?php //netteCache[01]000291a:3:{s:4:"time";s:21:"0.62308800 1388412437";s:9:"callbacks";a:1:{i:0;a:3:{i:0;a:2:{i:0;s:19:"Nette\Caching\Cache";i:1;s:9:"checkFile";}i:1;s:99:"/Applications/XAMPP/xamppfiles/htdocs/zdbs/zdbs/app/CertificatesModule/Models/Param/ParamEntity.php";i:2;i:1388412226;}}s:10:"serialized";b:1;}?>a:1:{i:0;O:30:"Doctrine\ORM\Mapping\ManyToOne":4:{s:12:"targetEntity";s:51:"CertificatesModule\Models\ParamType\ParamTypeEntity";s:7:"cascade";N;s:5:"fetch";s:5:"EAGER";s:10:"inversedBy";N;}}
+=======
 <?php //netteCache[01]000263a:3:{s:4:"time";s:21:"0.48731400 1388423461";s:9:"callbacks";a:1:{i:0;a:3:{i:0;a:2:{i:0;s:19:"Nette\Caching\Cache";i:1;s:9:"checkFile";}i:1;s:71:"E:\Work\htdocs\zdbs\app\CertificatesModule\Models\Param\ParamEntity.php";i:2;i:1388423453;}}s:10:"serialized";b:1;}?>a:1:{i:0;O:30:"Doctrine\ORM\Mapping\ManyToOne":4:{s:12:"targetEntity";s:51:"CertificatesModule\Models\ParamType\ParamTypeEntity";s:7:"cascade";N;s:5:"fetch";s:5:"EAGER";s:10:"inversedBy";N;}}
+>>>>>>> 30fa21622c3fe3eaca4f060f3bdc6d3ca13edd15
