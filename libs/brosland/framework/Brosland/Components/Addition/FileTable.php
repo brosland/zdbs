@@ -27,9 +27,9 @@ class FileTable extends Table
 	}
 	
 	/**
-	 * @param \Nette\Application\UI\Presenter $presenter
+	 * @param \Nette\Application\IPresenter $presenter
 	 */
-	protected function configure(\Nette\Application\UI\Presenter $presenter)
+	protected function configure(\Nette\Application\IPresenter $presenter)
 	{
 		// columns
 		$this->addColumn('name', 'Názov');

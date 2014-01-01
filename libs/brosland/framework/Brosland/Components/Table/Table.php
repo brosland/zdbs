@@ -2,7 +2,7 @@
 namespace Brosland\Components\Table;
 
 use Nette\Application\UI\Control,
-	Nette\Application\UI\Presenter,
+	Nette\Application\IPresenter,
 	Nette\ComponentModel\Container,
 	Nette\Utils\Paginator;
 
@@ -69,7 +69,7 @@ class Table extends Control implements \IteratorAggregate
 	 */
 	protected function attached($container)
 	{
-		if(!$container instanceof \Nette\Application\IPresenter)
+		if(!$container instanceof IPresenter)
 		{
 			parent::attached($container);
 			return;
@@ -108,9 +108,9 @@ class Table extends Control implements \IteratorAggregate
 	}
 	
 	/**
-	 * @param Presenter $presenter
+	 * @param IPresenter $presenter
 	 */
-	protected function configure(Presenter $presenter)
+	protected function configure(IPresenter $presenter)
 	{
 	}
 	
