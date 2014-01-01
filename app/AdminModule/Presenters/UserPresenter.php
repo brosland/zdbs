@@ -1,7 +1,7 @@
 <?php
 namespace AdminModule;
 
-use AdminModule\Components\Tables\UserTable;
+use AdminModule\Components\UserTable\UserTable;
 
 class UserPresenter extends BasePresenter
 {
@@ -11,13 +11,7 @@ class UserPresenter extends BasePresenter
 //		$password = $authenticator->calculateHash('heslo');
 //		
 //		$users = new \Doctrine\Common\Collections\ArrayCollection();
-//		$users->add(new \Brosland\Security\User('Katka', 'Lašáková', 'katarina.lasakova@netinvest.sk', $password));
-//		$users->add(new \Brosland\Security\User('Peťo', 'Zúber', 'peter.zuber@netinvest.sk', $password));
-//		$users->add(new \Brosland\Security\User('Ľuboš', 'Ďurovič', 'lubos.durovic@netinvest.sk', $password));
-//		$users->add(new \Brosland\Security\User('Marek', 'Turčáni', 'marek.turcani@netinvest.sk', $password));
-//		$users->add(new \Brosland\Security\User('Róbert', 'Vajda', 'robert.vajda@netinvest.sk', $password));
-//		
-//		$this->getUserDao()->save($users);
+//		$users->add(new \Brosland\Security\User('John', 'Doe', 'john@doe.com', $password));
 	}
 	
 	/**

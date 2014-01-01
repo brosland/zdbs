@@ -4,7 +4,7 @@ namespace AdminModule\Components\Tables;
 use Brosland\Components\Table\Models\DoctrineModel,
 	Brosland\Components\Table\Table,
 	Kdyby\Doctrine\EntityDao,
-	Nette\Application\UI\Presenter;
+	Nette\Application\IPresenter;
 
 class UserTable extends Table
 {
@@ -27,9 +27,9 @@ class UserTable extends Table
 	}
 	
 	/**
-	 * @param Presenter $presenter
+	 * @param IPresenter $presenter
 	 */
-	protected function configure(Presenter $presenter)
+	protected function configure(IPresenter $presenter)
 	{
 		// columns
 		$this->addColumn('name', 'Meno');
