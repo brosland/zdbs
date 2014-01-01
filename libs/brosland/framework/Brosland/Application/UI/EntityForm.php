@@ -7,10 +7,20 @@ use Brosland\Model\IEntity,
 
 abstract class EntityForm extends Form
 {
-	/** @var IEntity */
+	/**
+	 * @var IEntity
+	 */
 	protected $entity = NULL;
-	
-	
+
+
+	/**
+	 * @return bool
+	 */
+	public function hasEntity()
+	{
+		return $this->entity !== NULL;
+	}
+
 	/**
 	 * @return IEntity
 	 */
@@ -18,27 +28,29 @@ abstract class EntityForm extends Form
 	{
 		return $this->entity;
 	}
-	
+
 	/**
 	 * @param IEntity $entity
-	 * @param Container|NULL $container
 	 */
-	public function bindEntity(IEntity $entity, Container $container = NULL)
+	public function bindEntity(IEntity $entity)
 	{
 		$this->entity = $entity;
 		$reflection = $entity->getReflection();
-		
-		$components = $container == NULL ? $this->getComponents() : $container->getComponents();
-		
-		foreach($components as $name => $component)
+
+		foreach ($this->getComponents() as $name => $component)
 		{
+			if ($component instanceof Container)
+			{
+				continue;
+			}
+	
 			$value = NULL;
-			
-			if($reflection->hasMethod('get' . ucfirst($name)))
+
+			if ($reflection->hasMethod('get' . ucfirst($name)))
 			{
 				$value = $reflection->getMethod('get' . ucfirst($name))->invoke($entity);
 			}
-			else if($reflection->hasMethod('is' . ucfirst($name)))
+			else if ($reflection->hasMethod('is' . ucfirst($name)))
 			{
 				$value = $reflection->getMethod('is' . ucfirst($name))->invoke($entity);
 			}
@@ -46,18 +58,12 @@ abstract class EntityForm extends Form
 			{
 				continue;
 			}
-			
-			if($component instanceof Container)
-			{
-				$this->bindEntity($value, $component);
-				continue;
-			}
-			
-			if($value instanceof IEntity)
+
+			if ($value instanceof IEntity)
 			{
 				$value = $value->getId();
 			}
-			else if($value instanceof Collection)
+			else if ($value instanceof Collection)
 			{
 				$value = array_map(function(IEntity $entity) {
 					return $entity->getId();
