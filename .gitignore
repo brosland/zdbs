@@ -1,6 +1,6 @@
 nbproject/
 temp/
 log/
-libs/
+libs/*
 !/libs/brosland/
 composer.lock

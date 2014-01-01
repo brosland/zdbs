@@ -1,0 +1,9 @@
+{extends $parentTemplate}
+{block #row-columns}
+	<td style="width:48px; text-align: center;"><a n:ihref="$item, 'default'" class="fancybox" rel="fancybox" style="display: inline-block;"><img n:src="$item, 'thumbnail'" style="height:32px; vertical-align: middle;"></a></td>
+	<td>{$item->getName()}</td>
+	<td class="column-right column-size">{$item->getSize('kb')} kb</td>
+{/block}
+{block #row-actions}
+	<a n:ihref="$item, 'default'" class="ui-state-default"><span class="ui-icon ui-icon-link">link</span></a>
+{/block}
