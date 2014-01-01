@@ -1,6 +1,11 @@
+{block #head}
+{include #parent}
+<script type="text/javascript" src="{$basePath}/js/jquery.brosland.table.js"></script>
+{/block}
+
 {block content}
-<h2>{if $control->action === 'add'}Vytvorenie{else}Editácia{/if} kategórie</h2>
-
-{control categoryForm}
-
+<h2>Kategórie</h2>
+<div><a n:href="add">Vytvoriť novú kategóriu</a></div>
+<br>
+{control categoryTable}
 {/block}

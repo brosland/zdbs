@@ -1,4 +1,11 @@
+{block #head}
+{include #parent}
+<script type="text/javascript" src="{$basePath}/js/jquery.brosland.table.js"></script>
+{/block}
+
 {block content}
-<h2>Certifikáty</h2>
-<a n:href="SelectCertificateType">Vytvoriť nový certifikát</a>
+<h2>Typy certifikátov</h2>
+<div><a n:href="add">Vytvoriť nový typ certifikátu</a></div>
+<br>
+{control certificateTypeTable}
 {/block}

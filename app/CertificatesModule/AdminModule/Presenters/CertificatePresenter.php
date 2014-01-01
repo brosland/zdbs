@@ -1,7 +1,8 @@
 <?php
 namespace CertificatesModule\AdminModule;
 
-use CertificatesModule\AdminModule\Forms\CertificateForm,
+use CertificatesModule\AdminModule\Components\CertificateTable,
+	CertificatesModule\AdminModule\Forms\CertificateForm,
 	CertificatesModule\AdminModule\Forms\CertificateTypeSelectForm,
 	CertificatesModule\Models\CertificateType\CertificateTypeEntity,
 	CertificatesModule\Models\Certificate\CertificateEntity,
@@ -170,5 +171,18 @@ class CertificatePresenter extends \Brosland\Application\UI\SecurityPresenter
 	protected function createComponentCertificateForm()
 	{
 		return new CertificateForm($this->certificateTypeEntity, $this->certificateDao);
+	}
+
+	/**
+	 * @return CertificateTable
+	 */
+	protected function createComponentCertificateTable()
+	{
+		$queryBuilder = $this->certificateDao->createQueryBuilder('certificate')
+			->leftJoin('certificate.certificateType', 'certificateType')
+			->leftJoin('certificateType.category', 'category')
+			->groupBy('certificate.id');
+
+		return new CertificateTable($this->certificateDao, $queryBuilder);
 	}
 }

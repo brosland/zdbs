@@ -1,7 +1,8 @@
 <?php
 namespace CertificatesModule\AdminModule;
 
-use CertificatesModule\AdminModule\Forms\CertificateTypeForm,
+use CertificatesModule\AdminModule\Components\CertificateTypeTable,
+	CertificatesModule\AdminModule\Forms\CertificateTypeForm,
 	CertificatesModule\Models\CertificateType\CertificateTypeEntity,
 	CertificatesModule\Models\ParamType\ParamTypeEntity,
 	Kdyby\Doctrine\EntityDao,
@@ -20,11 +21,6 @@ class CertificateTypePresenter extends \Brosland\Application\UI\SecurityPresente
 		parent::startup();
 
 		$this->certificateTypeDao = $this->context->getService('certificates.certificateTypeDao');
-	}
-	
-	public function actionList()
-	{
-		throw new \Nette\Application\BadRequestException('Not supported yet.');
 	}
 
 	public function actionAdd()
@@ -49,8 +45,7 @@ class CertificateTypePresenter extends \Brosland\Application\UI\SecurityPresente
 		for ($i = 0; $i < count($values->paramTypes); $i++)
 		{
 			$paramType = $values->paramTypes[$i];
-			$paramTypeEntity = new ParamTypeEntity($paramType->name, $paramType->label,
-				$paramType->paramTypeId, $this->certificateTypeEntity);
+			$paramTypeEntity = new ParamTypeEntity($paramType->name, $paramType->label, $paramType->paramTypeId, $this->certificateTypeEntity);
 			$paramTypeEntity->setOrdering($i)
 				->setRequired($paramType->required);
 
@@ -70,7 +65,6 @@ class CertificateTypePresenter extends \Brosland\Application\UI\SecurityPresente
 //		$certificateTypeForm = $this['certificateTypeForm'];
 //		$certificateTypeForm['save']->onClick[] = callback($this, 'editCertificateType');
 	}
-
 //	/**
 //	 * @param SubmitButton $button
 //	 */
@@ -110,5 +104,17 @@ class CertificateTypePresenter extends \Brosland\Application\UI\SecurityPresente
 	protected function createComponentCertificateTypeForm()
 	{
 		return new CertificateTypeForm($this->certificateTypeDao);
+	}
+
+	/**
+	 * @return CertificateTypeTable
+	 */
+	protected function createComponentCertificateTypeTable()
+	{
+		$queryBuilder = $this->certificateTypeDao->createQueryBuilder('certificateType')
+			->leftJoin('certificateType.category', 'category')
+			->groupBy('certificateType.id');
+
+		return new CertificateTypeTable($this->certificateTypeDao, $queryBuilder);
 	}
 }

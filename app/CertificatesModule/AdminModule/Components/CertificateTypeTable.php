@@ -1,71 +1,76 @@
 <?php
-namespace AdminModule\Components\Tables;
+namespace CertificatesModule\AdminModule\Components;
 
 use Brosland\Components\Table\Models\DoctrineModel,
 	Brosland\Components\Table\Table,
+	Doctrine\ORM\QueryBuilder,
 	Kdyby\Doctrine\EntityDao,
-	Nette\Application\UI\Presenter;
+	Nette\Application\IPresenter;
 
-class UserTable extends Table
+class CertificateTypeTable extends Table
 {
-	/** @var EntityDao */
-	private $userDao;
-	
-	
 	/**
-	 * @param EntityDao $userDao
+	 * @var EntityDao
 	 */
-	public function __construct(EntityDao $userDao)
+	private $certificateTypeDao;
+
+
+	/**
+	 * @param EntityDao $certificateTypeDao
+	 * @param QueryBuilder $queryBuilder
+	 */
+	public function __construct(EntityDao $certificateTypeDao, QueryBuilder $queryBuilder)
 	{
-		$queryBuilder = $userDao->createQueryBuilder('user')
-			->leftJoin('user.roles', 'roles')
-			->groupBy('user.id');
-		
 		parent::__construct(new DoctrineModel($this, $queryBuilder));
-		
-		$this->userDao = $userDao;
+
+		$this->certificateTypeDao = $certificateTypeDao;
 	}
-	
+
 	/**
-	 * @param Presenter $presenter
+	 * @param IPresenter $presenter
 	 */
-	protected function configure(Presenter $presenter)
+	protected function configure(IPresenter $presenter)
 	{
 		// columns
-		$this->addColumn('name', 'Meno');
-		$this->addColumn('surname', 'Priezvisko');
-		$this->addColumn('email', 'Email');
-		$this->addColumn('registered', 'Dátum registrácie')
-			->dateFormat = 'd.m.Y, H:i';
-		$this->addColumn('lastLog', 'Posledné prihlásenie')
-			->dateFormat = 'd.m.Y, H:i';
-		$this->addColumn('roles', 'Roly', 'roles');
+		$this->addColumn('name', 'Názov');
+		$this->addColumn('description', 'Popis')
+			->maxLength = 64;
+		$this->addColumn('category', 'Kategória', 'category.name');
+		$this->addColumn('codePrefix', 'Prefix kódu', 'category.codePrefix');
+
+		// actions
+		$this->addAction('edit', 'Editovať')
+			->setIcon('ui-icon-pencil')
+			->setLink(callback(function($certificateType) use($presenter) {
+					return $presenter->link('CertificateType:edit', $certificateType->id);
+				}));
+
+		// toolbar
+		$this->addToolbarButton('delete', 'Zmazať')
+			->onClick[] = callback($this, 'deleteCertificateTypes');
 		
 		// sorting
 		$this->setSortTypes(array(
-			'name' => 'mena',
-			'surname' => 'priezviska',
-			'email' => 'emailu',
-			'registered' => 'dátumu registrácie',
-			'lastLog' => 'posledného príhlásenia',
-			'roles' => 'podľa roly'
+			'name' => 'názvu',
+			'description' => 'popisu',
+			'codePrefix' => 'prefixu kódu',
+			'category' => 'kategórie'
 		));
-		
-		$this->setDefaultSorting(array('surname' => 'asc', 'name' => 'asc'));
+
+		$this->setDefaultSorting(array('name' => 'asc'));
 	}
 	
 	/**
-	 * @param string
-	 * @return \Nette\Templating\FileTemplate
+	 * @param \Nette\Forms\Controls\SubmitButton
 	 */
-	protected function createTemplate($class = NULL)
+	public function deleteCertificateTypes(\Nette\Forms\Controls\SubmitButton $button)
 	{
-		$template = parent::createTemplate();
-		
-		$parentTemplate = $template->getFile();
-		$template->setFile(__DIR__ . '/templates/userTable.latte');
-		$template->parentTemplate = $parentTemplate;
-		
-		return $template;
+		$certificateTypes = $button->getForm()->getSelectedItems();
+
+		if (!empty($certificateTypes))
+		{
+			$this->certificateTypeDao->delete($certificateTypes);
+			$this->flashMessage('Typy certifikátov boli zmazané.', 'success');
+		}
 	}
 }

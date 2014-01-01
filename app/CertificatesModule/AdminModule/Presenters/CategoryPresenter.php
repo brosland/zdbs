@@ -1,7 +1,8 @@
 <?php
 namespace CertificatesModule\AdminModule;
 
-use CertificatesModule\AdminModule\Forms\CategoryForm,
+use CertificatesModule\AdminModule\Components\CategoryTable,
+	CertificatesModule\AdminModule\Forms\CategoryForm,
 	CertificatesModule\Models\Category\CategoryEntity,
 	Kdyby\Doctrine\EntityDao,
 	Nette\Forms\Controls\SubmitButton;
@@ -51,12 +52,12 @@ class CategoryPresenter extends \Brosland\Application\UI\SecurityPresenter
 	public function actionEdit($id)
 	{
 		$categoryEntity = $this->categoryDao->find($id);
-		
+
 		if (!$categoryEntity)
 		{
 			throw new \Nette\Application\BadRequestException('Category not found.');
 		}
-		
+
 		$categoryForm = $this['categoryForm'];
 		$categoryForm->bindEntity($categoryEntity);
 		$categoryForm['save']->onClick[] = callback($this, 'editCategory');
@@ -85,5 +86,17 @@ class CategoryPresenter extends \Brosland\Application\UI\SecurityPresenter
 	protected function createComponentCategoryForm()
 	{
 		return new CategoryForm($this->categoryDao);
+	}
+
+	/**
+	 * @return CategoryTable
+	 */
+	protected function createComponentCategoryTable()
+	{
+		$queryBuilder = $this->categoryDao->createQueryBuilder('category')
+			->leftJoin('category.certificateTypes', 'certificateTypes')
+			->groupBy('category.id');
+
+		return new CategoryTable($this->categoryDao, $queryBuilder);
 	}
 }

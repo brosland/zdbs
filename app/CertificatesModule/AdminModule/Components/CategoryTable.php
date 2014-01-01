@@ -1,71 +1,76 @@
 <?php
-namespace AdminModule\Components\Tables;
+namespace CertificatesModule\AdminModule\Components;
 
 use Brosland\Components\Table\Models\DoctrineModel,
 	Brosland\Components\Table\Table,
+	Doctrine\ORM\QueryBuilder,
 	Kdyby\Doctrine\EntityDao,
-	Nette\Application\UI\Presenter;
+	Nette\Application\IPresenter;
 
-class UserTable extends Table
+class CategoryTable extends Table
 {
-	/** @var EntityDao */
-	private $userDao;
-	
-	
 	/**
-	 * @param EntityDao $userDao
+	 * @var EntityDao
 	 */
-	public function __construct(EntityDao $userDao)
+	private $categoryDao;
+
+
+	/**
+	 * @param EntityDao $categoryDao
+	 * @param QueryBuilder $queryBuilder
+	 */
+	public function __construct(EntityDao $categoryDao, QueryBuilder $queryBuilder)
 	{
-		$queryBuilder = $userDao->createQueryBuilder('user')
-			->leftJoin('user.roles', 'roles')
-			->groupBy('user.id');
-		
 		parent::__construct(new DoctrineModel($this, $queryBuilder));
-		
-		$this->userDao = $userDao;
+
+		$this->categoryDao = $categoryDao;
 	}
-	
+
 	/**
-	 * @param Presenter $presenter
+	 * @param IPresenter $presenter
 	 */
-	protected function configure(Presenter $presenter)
+	protected function configure(IPresenter $presenter)
 	{
 		// columns
 		$this->addColumn('name', 'Meno');
-		$this->addColumn('surname', 'Priezvisko');
-		$this->addColumn('email', 'Email');
-		$this->addColumn('registered', 'Dátum registrácie')
-			->dateFormat = 'd.m.Y, H:i';
-		$this->addColumn('lastLog', 'Posledné prihlásenie')
-			->dateFormat = 'd.m.Y, H:i';
-		$this->addColumn('roles', 'Roly', 'roles');
-		
+		$this->addColumn('codePrefix', 'Prefix kódu');
+		$this->addColumn('description', 'Popis')
+			->maxLength = 64;
+		$this->addColumn('certificateTypes', 'Počet typov certifikátov');
+
+		// actions
+		$this->addAction('edit', 'Editovať')
+			->setIcon('ui-icon-pencil')
+			->setLink(callback(function($category) use($presenter) {
+					return $presenter->link('Category:edit', $category->id);
+				}));
+
+		// toolbar
+		$this->addToolbarButton('delete', 'Zmazať')
+			->onClick[] = callback($this, 'deleteCategories');
+
 		// sorting
 		$this->setSortTypes(array(
 			'name' => 'mena',
-			'surname' => 'priezviska',
-			'email' => 'emailu',
-			'registered' => 'dátumu registrácie',
-			'lastLog' => 'posledného príhlásenia',
-			'roles' => 'podľa roly'
+			'codePrefix' => 'prefixu kódu',
+			'description' => 'popisu',
+			'certificateTypes' => 'počtu typov certifikátov'
 		));
-		
-		$this->setDefaultSorting(array('surname' => 'asc', 'name' => 'asc'));
+
+		$this->setDefaultSorting(array('name' => 'asc'));
 	}
-	
+
 	/**
-	 * @param string
-	 * @return \Nette\Templating\FileTemplate
+	 * @param \Nette\Forms\Controls\SubmitButton
 	 */
-	protected function createTemplate($class = NULL)
+	public function deleteCategories(\Nette\Forms\Controls\SubmitButton $button)
 	{
-		$template = parent::createTemplate();
-		
-		$parentTemplate = $template->getFile();
-		$template->setFile(__DIR__ . '/templates/userTable.latte');
-		$template->parentTemplate = $parentTemplate;
-		
-		return $template;
+		$categories = $button->getForm()->getSelectedItems();
+
+		if (!empty($categories))
+		{
+			$this->categoryDao->delete($categories);
+			$this->flashMessage('Kategórie boli zmazané.', 'success');
+		}
 	}
 }
