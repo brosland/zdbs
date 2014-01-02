@@ -45,7 +45,8 @@ class CertificateTypePresenter extends \Brosland\Application\UI\SecurityPresente
 		for ($i = 0; $i < count($values->paramTypes); $i++)
 		{
 			$paramType = $values->paramTypes[$i];
-			$paramTypeEntity = new ParamTypeEntity($paramType->name, $paramType->label, $paramType->paramTypeId, $this->certificateTypeEntity);
+			$paramTypeEntity = new ParamTypeEntity($paramType->name, $paramType->label,
+				$paramType->paramTypeId, $certificateTypeEntity);
 			$paramTypeEntity->setOrdering($i)
 				->setRequired($paramType->required);
 
