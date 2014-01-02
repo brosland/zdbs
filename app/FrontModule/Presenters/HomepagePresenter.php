@@ -35,12 +35,12 @@ class HomepagePresenter extends BasePresenter
 	public function findCertificate()
 	{		
 		$value = $this['findForm']['find']->getValue();
-		$prefix = $value.substr(0,strlen($value)-8);
-		$code = $value.substr(strlen($prefix));
+		$prefix = substr($value, 0, strlen($value)-8);
+		$code = substr($value, strlen($prefix));
 		
 		$this->certificateEntity = $this->certificateDao->findOneBy(array('code' => $code));
 
-		if ($this->certificateEntity->getFullCode() !== $value)
+		if (! $this->certificateEntity || $this->certificateEntity->getFullCode() !== $value)
 		{
 			$this->flashMessage('Certifikát nenájdený', 'Certifikát nenájdený');
 		}
