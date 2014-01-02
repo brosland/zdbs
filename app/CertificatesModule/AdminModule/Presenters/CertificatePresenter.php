@@ -2,7 +2,7 @@
 namespace CertificatesModule\AdminModule;
 
 use CertificatesModule\AdminModule\Components\CertificateTable,
-	CertificatesModule\AdminModule\Components\CertificateViewControl,
+	CertificatesModule\Components\CertificateViewControl,
 	CertificatesModule\AdminModule\Forms\CertificateForm,
 	CertificatesModule\AdminModule\Forms\CertificateTypeSelectForm,
 	CertificatesModule\AdminModule\Forms\ImportCertificatesForm,
