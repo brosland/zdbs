@@ -22,13 +22,14 @@ class DateTimeParamEntity extends ParamEntity
 	/**
 	 * @param ParamTypeEntity $paramType
 	 * @param CertificateEntity $certificate
-	 * @param DateTime $value
+	 * @param DateTime|string $value
 	 */
-	public function __construct(ParamTypeEntity $paramType, CertificateEntity $certificate, DateTime $value)
+	public function __construct(ParamTypeEntity $paramType, CertificateEntity $certificate, $value)
 	{
 		parent::__construct($paramType, $certificate);
-
-		$this->value = $value;
+		
+		$this->value = is_string($value) ?
+			DateTime::createFromFormat(DateTime::W3C, $value) : $value;
 	}
 
 	/**
@@ -45,5 +46,13 @@ class DateTimeParamEntity extends ParamEntity
 	public function setValue(DateTime $value)
 	{
 		$this->value = $value;
+	}
+	
+	/**
+	 * @return string
+	 */
+	public function __toString()
+	{
+		return $this->value !== NULL ? $this->value->format(DateTime::W3C) : '';
 	}
 }

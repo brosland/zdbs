@@ -22,13 +22,13 @@ class BooleanParamEntity extends ParamEntity
 	/**
 	 * @param ParamTypeEntity $paramType
 	 * @param CertificateEntity $certificate
-	 * @param bool $value
+	 * @param bool|string $value
 	 */
 	public function __construct(ParamTypeEntity $paramType, CertificateEntity $certificate, $value)
 	{
 		parent::__construct($paramType, $certificate);
 
-		$this->value = $value;
+		$this->value = (bool) $value;
 	}
 
 	/**
@@ -67,5 +67,13 @@ class BooleanParamEntity extends ParamEntity
 		throw new \Nette\InvalidArgumentException(
 			sprintf('Can not convert boolean to %s.', ParamType::getLabel($paramTypeId))
 		);
+	}
+	
+	/**
+	 * @return string
+	 */
+	public function __toString()
+	{
+		return $this->value === TRUE ? '1' : '0';
 	}
 }

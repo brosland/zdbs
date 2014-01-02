@@ -1,3 +1,34 @@
+{block #head}
+{include #parent}
+
+<script type="text/javascript">
+	$(function() {
+		$(document).on('click', '#frmcertificateTypeForm-generateTemplate', function() {
+			var $table = $(document.createElement('table'));	
+			var $tbody = $(document.createElement('tbody'));
+			$table.append($tbody);
+			
+			$('#param-types .param-type').each(function(i, el) {
+				var $el = $(el);
+				var label = $el.find('input:text.label-field').val();
+				var name = $el.find('input:text.name-field').val();
+				var $tr = $(document.createElement('tr'))
+					.append($(document.createElement('th')).text(label))
+					.append($(document.createElement('td')).text('{' + '$' + name + '}'));
+			
+				if ($el.find('input.required-field:checked').val() == 0) {
+					$tr.attr('n:ifset', '$' + name);
+				}
+				
+				$tbody.append($tr);
+			});
+			
+			$('#frmcertificateTypeForm-template').val($table.prop('outerHTML'));
+		});
+	});
+</script>
+{/block}
+
 {block content}
 <h2>{if $control->action === 'add'}Vytvorenie{else}Editácia{/if} typu certifikátu</h2>
 

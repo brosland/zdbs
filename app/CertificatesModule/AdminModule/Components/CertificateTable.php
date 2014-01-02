@@ -42,6 +42,11 @@ class CertificateTable extends Table
 		$this->addColumn('category', 'Kategória', 'certificateType.category.name');
 
 		// actions
+		$this->addAction('detail', 'Detail')
+			->setIcon('ui-icon-zoomin')
+			->setLink(callback(function($certificate) use($presenter) {
+					return $presenter->link('Certificate:default', $certificate->id);
+				}));
 		$this->addAction('edit', 'Editovať')
 			->setIcon('ui-icon-pencil')
 			->setLink(callback(function($certificate) use($presenter) {

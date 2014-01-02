@@ -37,6 +37,15 @@ class CertificateTypeEntity extends \Brosland\Model\Entity
 	private $template;
 	/**
 	 * @ORM\OneToMany(
+	 * 	targetEntity="CertificatesModule\Models\Certificate\CertificateEntity",
+	 * 	fetch="EXTRA_LAZY", cascade="ALL", mappedBy="certificateType"
+	 * )
+	 * @ORM\OrderBy({"code"="ASC"})
+	 * @var ArrayCollection
+	 */
+	private $certificates;
+	/**
+	 * @ORM\OneToMany(
 	 * 	targetEntity="CertificatesModule\Models\ParamType\ParamTypeEntity",
 	 * 	fetch="EXTRA_LAZY", cascade="ALL", mappedBy="certificateType"
 	 * )
@@ -56,6 +65,7 @@ class CertificateTypeEntity extends \Brosland\Model\Entity
 		$this->category = $category;
 		$this->name = $name;
 		$this->template = $template;
+		$this->certificates = new ArrayCollection();
 		$this->paramTypes = new ArrayCollection();
 	}
 
@@ -129,6 +139,14 @@ class CertificateTypeEntity extends \Brosland\Model\Entity
 	{
 		$this->template = $template;
 		return $this;
+	}
+	
+	/**
+	 * @return ArrayCollection
+	 */
+	public function getCertificates()
+	{
+		return $this->certificates;
 	}
 
 	/**

@@ -1,7 +1,8 @@
 <?php
 namespace FrontModule;
 
-use CertificatesModule\Models\Certificate\CertificateEntity,
+use CertificatesModule\AdminModule\Components\CertificateViewControl,
+	CertificatesModule\Models\Certificate\CertificateEntity,
 	Kdyby\Doctrine\EntityDao,
 	FrontModule\Forms\FindForm;
 
@@ -11,8 +12,12 @@ class HomepagePresenter extends BasePresenter
 	 * @var EntityDao
 	 */
 	private $certificateDao;
-	
-	
+	/**
+	 * @var CertificateEntity
+	 */
+	private $certificateEntity;
+
+
 	public function startup()
 	{
 		parent::startup();
@@ -25,42 +30,37 @@ class HomepagePresenter extends BasePresenter
 		$findForm = $this['findForm'];
 		$findForm['save']->onClick[] = callback($this, 'findCertificate');
 	}
-	
-	public function findCertificate()
-	{		
-		$value = $this['findForm']['find']->getValue();
-		$prefix = substr($value, 0, strlen($value)-8);
-		$code = substr($value, strlen($prefix));
-		
-		$certificateEntity = $this->certificateDao->findOneBy(array('code' => $code));
 
-		if (!$certificateEntity || $certificateEntity->getFullCode() !== $value)
+	public function findCertificate()
+	{
+		$value = $this['findForm']['find']->getValue();
+		$prefix = substr($value, 0, strlen($value) - 8);
+		$code = substr($value, strlen($prefix));
+
+		$this->certificateEntity = $this->certificateDao->findOneBy(array('code' => $code));
+
+		if (!$this->certificateEntity || $this->certificateEntity->getFullCode() !== $value)
 		{
 			$this->flashMessage('Certifikát nenájdený', 'Certifikát nenájdený');
 			return;
 		}
-		
-		$template = new \Nette\Templating\Template();
-		$template->registerFilter(new \Nette\Latte\Engine());
-		$template->registerHelperLoader('Nette\Templating\Helpers::loader');
-		$template->setSource($certificateEntity->getCertificateType()->getTemplate());
-		
-		foreach ($certificateEntity->getParams() as $param)
-		/* @var $param \CertificatesModule\Models\Param\ParamEntity */
-		{
-			$paramName = $param->getParamType()->getName();
-			$template->$paramName = $param->getValue();
-		}
-		
-		$this->template->certificate = $certificateEntity;
-		$this->template->certificateTemplate = $template;
+
+		$this->template->certificate = $this->certificateEntity;
 	}
-	
+
 	/**
-	 * @return CategoryForm
+	 * @return FindForm
 	 */
 	protected function createComponentFindForm()
 	{
 		return new FindForm($this->certificateDao);
+	}
+
+	/**
+	 * @return CertificateViewControl
+	 */
+	protected function createComponentCertificateView()
+	{
+		return new CertificateViewControl($this->certificateEntity);
 	}
 }

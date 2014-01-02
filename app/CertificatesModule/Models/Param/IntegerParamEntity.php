@@ -21,13 +21,13 @@ class IntegerParamEntity extends ParamEntity
 	/**
 	 * @param ParamTypeEntity $paramType
 	 * @param CertificateEntity $certificate
-	 * @param int $value
+	 * @param int|string $value
 	 */
 	public function __construct(ParamTypeEntity $paramType, CertificateEntity $certificate, $value)
 	{
 		parent::__construct($paramType, $certificate);
 
-		$this->value = $value;
+		$this->value = (int) $value;
 	}
 
 	/**
@@ -44,5 +44,13 @@ class IntegerParamEntity extends ParamEntity
 	public function setValue($value)
 	{
 		$this->value = $value;
+	}
+	
+	/**
+	 * @return string
+	 */
+	public function __toString()
+	{
+		return (string) $this->value;
 	}
 }

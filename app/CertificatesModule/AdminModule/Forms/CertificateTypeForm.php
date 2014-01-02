@@ -12,7 +12,7 @@ class CertificateTypeForm extends \Brosland\Application\UI\EntityForm
 	 * @var array
 	 */
 	private static $REQUIRED_OPTIONS = array(
-		TRUE => 'Áno', FALSE => 'Nie'
+		1 => 'Áno', 0 => 'Nie'
 	);
 	/**
 	 * @var EntityDao
@@ -61,14 +61,18 @@ class CertificateTypeForm extends \Brosland\Application\UI\EntityForm
 		$this->addGroup('Parametre certifikátu');
 		$replicator = $this->addDynamic('paramTypes', function($paramType) {
 			$paramType->addText('name', 'Názov', 64, 255)
-				->setRequired();
+				->setRequired()
+				->getControlPrototype()->addAttributes(array('class' => 'name-field'));
 			$paramType->addText('label', 'Názov parametra', 64, 255)
-				->setRequired();
+				->setRequired()
+				->getControlPrototype()->addAttributes(array('class' => 'label-field'));
 			$paramType->addSelect('paramTypeId', 'Typ parametra', ParamType::getValues())
 				->setRequired()
 				->setPrompt('Vyberte možnosť');
 			$paramType->addRadioList('required', 'Vyžadovaný', self::$REQUIRED_OPTIONS)
-				->setRequired();
+				->setValue(0)
+				->setRequired()
+				->getControlPrototype()->addAttributes(array('class' => 'required-field'));
 			$paramType->addSubmit('remove', 'Odstrániť')
 				->setAttribute('class', 'ajax remove-button')
 				->setValidationScope(FALSE)
@@ -85,7 +89,9 @@ class CertificateTypeForm extends \Brosland\Application\UI\EntityForm
 				$presenter = $paramType->getForm()->getPresenter();
 				$presenter->invalidateControl($paramType->getForm()->getName());
 			});
-
+		
+		$this->addButton('generateTemplate', 'Generovať šablónu');
+		
 		$this->setCurrentGroup();
 		$this->addSubmit('save', 'Ulož');
 	}

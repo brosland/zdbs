@@ -112,6 +112,14 @@ class CertificateEntity extends \Brosland\Model\Entity
 	}
 
 	/**
+	 * @return bool
+	 */
+	public function hasExpiration()
+	{
+		return $this->expiration !== NULL;
+	}
+
+	/**
 	 * @return DateTime
 	 */
 	public function getExpiration()
