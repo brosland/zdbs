@@ -38,6 +38,7 @@
 					<div id="header">
 						<div id="links">
 							<ul class="ui-helper-clearfix">
+								<li><a n:href=":Certificates:Admin:Certificate:list">Certifikáty</a></li>
 								{if $user->isLoggedIn()}
 								<li n:if="$user->isAllowed('administration')"><a n:href=":Admin:Dashboard:">Administrácia</a></li>
 								<li><a n:href=":Front:User:edit">Profil</a></li>

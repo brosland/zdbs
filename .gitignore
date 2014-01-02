@@ -5,5 +5,5 @@
 !/log/.htaccess
 /nbproject/
 /temp/*
-/temp/.htaccess
+!/temp/.htaccess
 composer.lock

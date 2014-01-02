@@ -30,10 +30,7 @@ class CertificateForm extends \Brosland\Application\UI\EntityForm
 	 */
 	protected function configure(IPresenter $presenter)
 	{
-		$this->addGroup('Certifikát');
 		$this->addDatePicker('expiration', 'Dátum expirácie');
-
-		$this->addGroup('Parametre certifikátu');
 		$params = $this->addContainer('params');
 
 		foreach ($this->certificateTypeEntity->getParamTypes() as $paramType)

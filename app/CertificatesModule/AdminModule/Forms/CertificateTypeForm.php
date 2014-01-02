@@ -49,7 +49,8 @@ class CertificateTypeForm extends \Brosland\Application\UI\EntityForm
 					|| !$certificateTypeDao->findOneBy(array('name' => $name));
 			}, 'Typ certifikátu s rovnakým názvom už existuje.');
 		$this->addTextArea('description', 'Popis');
-		$this->addTextArea('template', 'Šablóna výpisu detailu');
+		$this->addTextArea('template', 'Šablóna výpisu detailu')
+			->setRequired();
 		$this->addEntitySelect('category', 'Kategória', NULL, 'name')
 			->setItems($this->certificateTypeDao->related('category')->findAll())
 			->setPrompt('Vyberte kategóriu')
