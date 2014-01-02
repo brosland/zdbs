@@ -28,11 +28,8 @@ class FindForm extends Form
 	 */
 	protected function configure(IPresenter $presenter)
 	{
-		$certificateDao = $this->certificateDao;
-		
 		$this->addText('find', 'Vyhľadaj', 64, 255)
 			->setRequired();
-
 		$this->addSubmit('save', 'Vyhľadaj');
 	}
 }
