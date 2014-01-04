@@ -85,7 +85,9 @@ class TableForm extends Form
 			{
 				$row = $rows->addContainer($i);
 				$row->addHidden('id');
-				$row->addCheckbox('checked');
+				$row->addCheckbox('checked')
+					->getControlPrototype()
+						->addAttributes(array('class' => 'row-checkbox'));
 			}
 		}
 		

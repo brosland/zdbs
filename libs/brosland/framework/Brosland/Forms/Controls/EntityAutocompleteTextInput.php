@@ -229,33 +229,33 @@ class EntityAutocompleteTextInput extends TextInput implements ISignalReceiver
 
 	/**
 	 * Min-length validator: has control's value minimal length?
-	 * @param  TextBase
+	 * @param  IControl $control
 	 * @param  int  length
 	 * @return bool
 	 */
-	public static function validateMinLength(TextBase $control, $length)
+	public static function validateMinLength(IControl $control, $length)
 	{
 		throw new \LogicException(':MIN_LENGTH validator is not applicable to EntityAutocompleteTextInput.');
 	}
 	
 	/**
 	 * Max-length validator: is control's value length in limit?
-	 * @param  TextBase
+	 * @param  IControl $control
 	 * @param  int  length
 	 * @return bool
 	 */
-	public static function validateMaxLength(TextBase $control, $length)
+	public static function validateMaxLength(IControl $control, $length)
 	{
 		throw new \LogicException(':MAX_LENGTH validator is not applicable to EntityAutocompleteTextInput.');
 	}
 	
 	/**
 	 * Length validator: is control's value length in range?
-	 * @param  TextBase
+	 * @param  IControl $control
 	 * @param  array  min and max length pair
 	 * @return bool
 	 */
-	public static function validateLength(TextBase $control, $range)
+	public static function validateLength(IControl $control, $range)
 	{
 		throw new \LogicException(':LENGTH validator is not applicable to EntityAutocompleteTextInput.');
 	}
@@ -321,11 +321,11 @@ class EntityAutocompleteTextInput extends TextInput implements ISignalReceiver
 
 	/**
 	 * Range validator: is a control's value number in specified range?
-	 * @param  TextBase
+	 * @param  IControl $control
 	 * @param  array  min and max value pair
 	 * @return bool
 	 */
-	public static function validateRange(TextBase $control, $range)
+	public static function validateRange(IControl $control, $range)
 	{
 		throw new \LogicException(':RANGE validator is not applicable to EntityAutocompleteTextInput.');
 	}

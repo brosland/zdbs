@@ -2,7 +2,7 @@
 	<div n:foreach="$flashes as $flash" n:class="flash, $flash->type">
 		{$flash->message}
 	</div>
-	{assign form => $control['form']}
+	{var $form => $control['form']}
 	{form form}
 	<div n:inner-block="toolbar" class="table-toolbar ui-helper-clearfix">
 		<div n:if="$control->hasToolbarButtons()" n:inner-block="toolbar-buttons" n:formContainer="toolbar" class="table-toolbar-buttons">
@@ -12,7 +12,7 @@
 			<div n:if="$control->sortable && $control->hasSorting()" n:formContainer="sorting" class="table-sorting">
 				Zoradiť podľa: {input type} {input direction} {input sort, class => 'ui-state-default'}
 			</div>
-			{assign p => $control->paginator}
+			{var $p => $control->paginator}
 			<div class="table-paginator">
 				{($p->page - 1) * $p->itemsPerPage + 1}-{if $p->last}{$p->itemCount}{else}{$p->page * $p->itemsPerPage}{/if} z {$p->itemCount}
 				<a n:if="!$p->first" n:href="setPage!, $p->page - 1" title="Späť" class="ajax ui-state-default"><span class="ui-icon ui-icon-carat-1-w"></span></a>
@@ -31,7 +31,7 @@
 		<tbody n:inner-block="tbody" n:formContainer="rows">
 			<tr n:inner-block="row" n:foreach="$control as $item" id="row{$iterator->key()}" n:class="$control->getRowClass()">
 				<td n:if="$control->hasToolbarButtons()" n:inner-block="row-checkbox" n:formContainer="$iterator->key()">
-					{input checked, class => 'row-checkbox'}{input id}
+					{input checked}{input id}
 				</td>
 				{block #row-columns}{foreach $control['columns']->getComponents() as $column}{block #cell}{control $column:cell}{/block}{/foreach}{/block}
 				<td n:inner-block="row-actions" n:if="$control->hasActions()" class="row-actions column-right">
