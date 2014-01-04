@@ -1,21 +1,14 @@
 <?php
 namespace FrontModule;
 
-use Kdyby\Doctrine\EntityManager;
-
-class DatabasePresenter extends BasePresenter
+class DatabasePresenter extends \Presenters\BasePresenter
 {
-	/** @var EntityManager */
-	private $entityManager;
-
-
 	/**
-	 * @param EntityManager $entityManager
+	 * @autowire
+	 * @var \Kdyby\Doctrine\EntityManager
 	 */
-	public function injectEntityManager(EntityManager $entityManager)
-	{
-		$this->entityManager = $entityManager;
-	}
+	protected $entityManager;
+
 
 	public function actionUpdate()
 	{

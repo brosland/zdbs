@@ -9,7 +9,7 @@ use Kdyby\Doctrine\EntityDao,
 	Nette\Application\BadRequestException,
 	Nette\Mail\Message;
 
-class UserPresenter extends BasePresenter
+class UserPresenter extends \Presenters\BasePresenter
 {
 	/** @var User */
 	private $userEntity = NULL;

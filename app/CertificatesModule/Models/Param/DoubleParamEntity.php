@@ -21,13 +21,13 @@ class DoubleParamEntity extends ParamEntity
 	/**
 	 * @param ParamTypeEntity $paramType
 	 * @param CertificateEntity $certificate
-	 * @param double|string $value
+	 * @param double $value
 	 */
 	public function __construct(ParamTypeEntity $paramType, CertificateEntity $certificate, $value)
 	{
 		parent::__construct($paramType, $certificate);
 
-		$this->value = (double) $value;
+		$this->value = $value;
 	}
 
 	/**

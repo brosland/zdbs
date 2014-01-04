@@ -5,23 +5,17 @@ use CertificatesModule\AdminModule\Components\CertificateTypeTable,
 	CertificatesModule\AdminModule\Forms\CertificateTypeForm,
 	CertificatesModule\Models\CertificateType\CertificateTypeEntity,
 	CertificatesModule\Models\ParamType\ParamTypeEntity,
-	Kdyby\Doctrine\EntityDao,
 	Nette\Forms\Controls\SubmitButton;
 
-class CertificateTypePresenter extends \Brosland\Application\UI\SecurityPresenter
+class CertificateTypePresenter extends \Presenters\BasePresenter
 {
 	/**
-	 * @var EntityDao
+	 * @autowire(CertificatesModule\Models\CertificateType\CertificateTypeEntity,
+	 * 	factory=Kdyby\Doctrine\EntityDaoFactory)
+	 * @var \Kdyby\Doctrine\EntityDao
 	 */
-	private $certificateTypeDao;
+	protected $certificateTypeDao;
 
-
-	public function startup()
-	{
-		parent::startup();
-
-		$this->certificateTypeDao = $this->context->getService('certificates.certificateTypeDao');
-	}
 
 	public function actionAdd()
 	{
@@ -45,8 +39,7 @@ class CertificateTypePresenter extends \Brosland\Application\UI\SecurityPresente
 		for ($i = 0; $i < count($values->paramTypes); $i++)
 		{
 			$paramType = $values->paramTypes[$i];
-			$paramTypeEntity = new ParamTypeEntity($paramType->name, $paramType->label,
-				$paramType->paramTypeId, $certificateTypeEntity);
+			$paramTypeEntity = new ParamTypeEntity($paramType->name, $paramType->label, $paramType->paramTypeId, $certificateTypeEntity);
 			$paramTypeEntity->setOrdering($i)
 				->setRequired($paramType->required);
 
@@ -116,6 +109,6 @@ class CertificateTypePresenter extends \Brosland\Application\UI\SecurityPresente
 			->leftJoin('certificateType.category', 'category')
 			->groupBy('certificateType.id');
 
-		return new CertificateTypeTable($this->certificateTypeDao, $queryBuilder);
+		return new CertificateTypeTable($this->certificateTypeDao, $queryBuilder, $this->getHttpResponse());
 	}
 }

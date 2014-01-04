@@ -4,23 +4,17 @@ namespace CertificatesModule\AdminModule;
 use CertificatesModule\AdminModule\Components\CategoryTable,
 	CertificatesModule\AdminModule\Forms\CategoryForm,
 	CertificatesModule\Models\Category\CategoryEntity,
-	Kdyby\Doctrine\EntityDao,
 	Nette\Forms\Controls\SubmitButton;
 
-class CategoryPresenter extends \Brosland\Application\UI\SecurityPresenter
+class CategoryPresenter extends \Presenters\BasePresenter
 {
 	/**
-	 * @var EntityDao
+	 * @autowire(CertificatesModule\Models\Category\CategoryEntity,
+	 * 	factory=Kdyby\Doctrine\EntityDaoFactory)
+	 * @var \Kdyby\Doctrine\EntityDao
 	 */
-	private $categoryDao;
+	protected $categoryDao;
 
-
-	public function startup()
-	{
-		parent::startup();
-
-		$this->categoryDao = $this->context->getService('certificates.categoryDao');
-	}
 
 	public function actionAdd()
 	{

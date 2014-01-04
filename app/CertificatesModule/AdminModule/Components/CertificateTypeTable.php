@@ -3,12 +3,11 @@ namespace CertificatesModule\AdminModule\Components;
 
 use Brosland\Components\Table\Models\DoctrineModel,
 	Brosland\Components\Table\Table,
-	CertificatesModule\Models\Certificate\FilterByTypeQuery,
-	CertificatesModule\Models\CertificateType\CertificateTypeEntity,
 	DateTime,
 	Doctrine\ORM\QueryBuilder,
 	Kdyby\Doctrine\EntityDao,
 	Nette\Application\IPresenter,
+	Nette\Http\Response,
 	SimpleXMLElement;
 
 class CertificateTypeTable extends Table
@@ -17,17 +16,22 @@ class CertificateTypeTable extends Table
 	 * @var EntityDao
 	 */
 	private $certificateTypeDao;
+	/**
+	 * @var Response
+	 */
+	private $httpResponse;
 
 
 	/**
 	 * @param EntityDao $certificateTypeDao
 	 * @param QueryBuilder $queryBuilder
 	 */
-	public function __construct(EntityDao $certificateTypeDao, QueryBuilder $queryBuilder)
+	public function __construct(EntityDao $certificateTypeDao, QueryBuilder $queryBuilder, Response $httpResponse)
 	{
 		parent::__construct(new DoctrineModel($this, $queryBuilder));
 
 		$this->certificateTypeDao = $certificateTypeDao;
+		$this->httpResponse = $httpResponse;
 	}
 
 	/**
@@ -122,14 +126,16 @@ class CertificateTypeTable extends Table
 			}
 		}
 		
-		$fileName = $certificateType->getName() . '.xml';
-		$response = new \Nette\Application\Responses\TextResponse($xml->asXML());
+		$dom = new \DOMDocument('1.0');
+		$dom->formatOutput = true;
+		$dom->loadXML($xml->asXML());
 		
-		$httpResponse = $this->getPresenter()->getContext()->getService('httpResponse');
-		/* @var $httpResponse \Nette\Http\Response */
-		$httpResponse->setHeader('Content-Description', 'File Transfer');
-		$httpResponse->setContentType('application/xml', 'UTF-8');
-		$httpResponse->setHeader('Content-Disposition', 'attachment; filename=' . $fileName);
+		$fileName = $certificateType->getName() . '.xml';
+		$response = new \Nette\Application\Responses\TextResponse($dom->saveXML());
+		
+		$this->httpResponse->setHeader('Content-Description', 'File Transfer')
+			->setHeader('Content-Disposition', 'attachment; filename=' . $fileName)
+			->setContentType('application/xml', 'UTF-8');
 		
 		$this->getPresenter()->sendResponse($response);
 	}

@@ -11,46 +11,44 @@ use CertificatesModule\AdminModule\Components\CertificateTable,
 	CertificatesModule\Models\ParamType\ParamType,
 	CertificatesModule\Models\ParamType\ParamTypeEntity,
 	DateTime,
-	Kdyby\Doctrine\EntityDao,
 	Nette\Forms\Controls\SubmitButton;
 
-class CertificatePresenter extends \Brosland\Application\UI\SecurityPresenter
+class CertificatePresenter extends \Presenters\BasePresenter
 {
 	/**
-	 * @var EntityDao
+	 * @autowire(CertificatesModule\Models\CertificateType\CertificateTypeEntity,
+	 * 	factory=Kdyby\Doctrine\EntityDaoFactory)
+	 * @var \Kdyby\Doctrine\EntityDao
 	 */
-	private $certificateTypeDao;
+	protected $certificateTypeDao;
+	/**
+	 * @autowire(CertificatesModule\Models\Certificate\CertificateEntity,
+	 * 	factory=Kdyby\Doctrine\EntityDaoFactory)
+	 * @var \Kdyby\Doctrine\EntityDao
+	 */
+	protected $certificateDao;
 	/**
 	 * @var CertificateTypeEntity
 	 */
 	private $certificateTypeEntity = NULL;
-	/**
-	 * @var EntityDao
-	 */
-	private $certificateDao;
 	/**
 	 * @var CertificateEntity
 	 */
 	private $certificateEntity = NULL;
 
 
-	public function startup()
-	{
-		parent::startup();
-
-		$this->certificateTypeDao = $this->context->getService('certificates.certificateTypeDao');
-		$this->certificateDao = $this->context->getService('certificates.certificateDao');
-	}
-	
+	/**
+	 * @var int $id
+	 */
 	public function actionDefault($id)
 	{
 		$this->certificateEntity = $this->certificateDao->find($id);
-		
+
 		if (!$this->certificateEntity)
 		{
-			throw new \Nette\Application\BadRequestException('Certificate not found.', 42);
+			throw new \Nette\Application\BadRequestException('Certificate not found.', 404);
 		}
-		
+
 		$this->template->certificate = $this->certificateEntity;
 	}
 
@@ -78,7 +76,6 @@ class CertificatePresenter extends \Brosland\Application\UI\SecurityPresenter
 	public function addCertificate(SubmitButton $button)
 	{
 		$values = $button->getForm()->getValues();
-
 		$code = $this->generateCode();
 
 		$certificateEntity = new CertificateEntity($this->certificateTypeEntity, $code);
@@ -87,8 +84,7 @@ class CertificatePresenter extends \Brosland\Application\UI\SecurityPresenter
 		foreach ($this->certificateTypeEntity->getParamTypes() as $paramType)
 		{
 			$paramName = $paramType->getName();
-			$param = $this->createParamEntity($certificateEntity,
-				$paramType, $values->params->$paramName);
+			$param = $this->createParamEntity($certificateEntity, $paramType, $values->params->$paramName);
 
 			$certificateEntity->getParams()->add($param);
 		}
@@ -105,7 +101,7 @@ class CertificatePresenter extends \Brosland\Application\UI\SecurityPresenter
 	public function actionEdit($id)
 	{
 		$certificateEntity = $this->certificateDao->find($id);
-		
+
 		if (!$certificateEntity)
 		{
 			throw new \Nette\Application\BadRequestException('Certificate not found.');
@@ -133,14 +129,14 @@ class CertificatePresenter extends \Brosland\Application\UI\SecurityPresenter
 			$name = $param->getParamType()->getName();
 			$param->setValue($values->params->$name);
 		}
-		
+
 		$this->certificateDao->save($certificateEntity);
 		$this->certificateDao->getEntityManager()->flush();
 
 		$this->flashMessage('Certifikát bol úspešne upravený.', 'success');
 		$this->redirect('list');
 	}
-	
+
 	/**
 	 * @param int $certificateTypeId
 	 */
@@ -150,10 +146,10 @@ class CertificatePresenter extends \Brosland\Application\UI\SecurityPresenter
 		{
 			$this->certificateTypeEntity = $this->certificateTypeDao->find($certificateTypeId);
 		}
-		
+
 		$this['importCertificatesForm']['certificateType']->setDefaultValue($this->certificateTypeEntity);
 	}
-	
+
 	/**
 	 * @param ImportCertificatesForm $form
 	 */
@@ -161,39 +157,39 @@ class CertificatePresenter extends \Brosland\Application\UI\SecurityPresenter
 	{
 		$this->certificateTypeEntity = $form->getValues()->certificateType;
 		$xmlFile = $form->getValues()->file;
-		
+
 		$xml = new \SimpleXMLElement($xmlFile->getContents());
-		
+
 		foreach ($xml->certificateType->certificate as $certificateXml)
 		{
 			$code = $this->generateCode();
 			$certificateEntity = new CertificateEntity($this->certificateTypeEntity, $code);
-			
+
 			$created = (string) $certificateXml->created;
 			$created = empty($created) ? new DateTime()
 				: DateTime::createFromFormat(DateTime::W3C, (string) $certificateXml->created);
 			$certificateEntity->setCreated($created);
-			
+
 			$expiration = (string) $certificateXml->expiration;
 			$expiration = empty($expiration) ? NULL
 				: DateTime::createFromFormat(DateTime::W3C, (string) $certificateXml->expiration);
 			$certificateEntity->setExpiration($expiration);
-			
+
 			foreach ($this->certificateTypeEntity->getParamTypes() as $paramType)
 			/* @var $paramType ParamTypeEntity */
 			{
 				$paramName = $paramType->getName();
-				$param = $this->createParamEntity($certificateEntity,
-					$paramType, (string) $certificateXml->$paramName);
-				
+				$param = $this->createParamEntity($certificateEntity, $paramType,
+					(string) $certificateXml->$paramName);
+
 				$certificateEntity->getParams()->add($param);
 			}
-			
+
 			$this->certificateDao->save($certificateEntity);
 		}
-		
+
 		$this->certificateDao->getEntityManager()->flush();
-		
+
 		$this->flashMessage('Certifikáty boli úspešne importované.', 'success');
 		$this->redirect('list');
 	}
@@ -232,7 +228,7 @@ class CertificatePresenter extends \Brosland\Application\UI\SecurityPresenter
 
 		return new CertificateTable($this->certificateDao, $queryBuilder);
 	}
-	
+
 	/**
 	 * @return ImportCertificatesForm
 	 */
@@ -240,10 +236,10 @@ class CertificatePresenter extends \Brosland\Application\UI\SecurityPresenter
 	{
 		$form = new ImportCertificatesForm($this->certificateTypeDao);
 		$form->onSuccess[] = callback($this, 'importCertificates');
-		
+
 		return $form;
 	}
-	
+
 	/**
 	 * @return CertificateViewControl
 	 */
@@ -251,40 +247,44 @@ class CertificatePresenter extends \Brosland\Application\UI\SecurityPresenter
 	{
 		return new CertificateViewControl($this->certificateEntity);
 	}
-	
+
 	/**
-	 * @param CertificateEntity $certificate
-	 * @param ParamTypeEntity $paramType
+	 * @param CertificateEntity $certificateEntity
+	 * @param ParamTypeEntity $paramTypeEntity
 	 * @param mixed $value
+	 * @return \CertificatesModule\Models\Param\ParamEntity
 	 */
-	private function createParamEntity(CertificateEntity $certificate, ParamTypeEntity $paramType, $value)
+	private function createParamEntity(CertificateEntity $certificateEntity,
+		ParamTypeEntity $paramTypeEntity, $value)
 	{
-		switch ($paramType->getParamTypeId())
+		switch ($paramTypeEntity->getParamTypeId())
 		{
 			case ParamType::BOOLEAN:
 				return new \CertificatesModule\Models\Param\BooleanParamEntity(
-					$paramType, $certificate, $value);
+					$paramTypeEntity, $certificateEntity, (boolean) $value);
 			case ParamType::INTEGER:
 				return new \CertificatesModule\Models\Param\IntegerParamEntity(
-					$paramType, $certificate, $value);
+					$paramTypeEntity, $certificateEntity, (int) $value);
 			case ParamType::DOUBLE:
 				return new \CertificatesModule\Models\Param\DoubleParamEntity(
-					$paramType, $certificate, $value);
+					$paramTypeEntity, $certificateEntity, (double) $value);
 			case ParamType::STRING:
 				return new \CertificatesModule\Models\Param\StringParamEntity(
-					$paramType, $certificate, $value);
+					$paramTypeEntity, $certificateEntity, (string) $value);
 			case ParamType::TEXT:
 				return new \CertificatesModule\Models\Param\TextParamEntity(
-					$paramType, $certificate, $value);
+					$paramTypeEntity, $certificateEntity, (string) $value);
 			case ParamType::DATETIME:
+				$value = is_string($value) ?
+					DateTime::createFromFormat(DateTime::W3C, $value) : $value;
+
 				return new \CertificatesModule\Models\Param\DateTimeParamEntity(
-					$paramType, $certificate, $value);
+					$paramTypeEntity, $certificateEntity, $value);
 		}
-		
-		throw new \Nette\InvalidArgumentException(
-			sprintf('Undefined param type id %d.', $paramTypeId));
+
+		throw new \Nette\InvalidArgumentException('Undefined param type.');
 	}
-	
+
 	/**
 	 * @return string
 	 */
@@ -295,7 +295,7 @@ class CertificatePresenter extends \Brosland\Application\UI\SecurityPresenter
 			$code = \Nette\Utils\Strings::random(8);
 		}
 		while ($this->certificateDao->findOneBy(array('code' => $code)));
-		
+
 		return $code;
 	}
 }

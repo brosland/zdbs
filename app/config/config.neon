@@ -55,8 +55,8 @@ common:
 		routerFactory: Router\RouterFactory
 		router: @routerFactory::createRouter
 		
-		roleDao: @doctrine.dao(Brosland\Security\Role\RoleEntity)
-		userDao: @doctrine.dao(Brosland\Security\User\UserEntity)
+		roleDao: @doctrine.dao(Brosland\Security\RoleEntity)
+		userDao: @doctrine.dao(Brosland\Security\UserEntity)
 		adminDao: @doctrine.dao(Models\Admin\AdminEntity)
 
 	factories:

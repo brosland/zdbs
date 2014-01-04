@@ -4,7 +4,7 @@ namespace FrontModule;
 use FrontModule\Forms\SignForm,
 	Nette\Security\AuthenticationException;
 
-class SignPresenter extends BasePresenter
+class SignPresenter extends \Presenters\BasePresenter
 {
 
 	/**

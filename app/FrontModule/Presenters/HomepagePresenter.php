@@ -1,29 +1,23 @@
 <?php
 namespace FrontModule;
 
-use CertificatesModule\AdminModule\Components\CertificateViewControl,
+use CertificatesModule\Components\CertificateViewControl,
 	CertificatesModule\Models\Certificate\CertificateEntity,
-	Kdyby\Doctrine\EntityDao,
 	FrontModule\Forms\FindForm;
 
-class HomepagePresenter extends BasePresenter
+class HomepagePresenter extends \Presenters\BasePresenter
 {
 	/**
-	 * @var EntityDao
+	 * @autowire(CertificatesModule\Models\Certificate\CertificateEntity,
+	 * 	factory=Kdyby\Doctrine\EntityDaoFactory)
+	 * @var \Kdyby\Doctrine\EntityDao
 	 */
-	private $certificateDao;
+	protected $certificateDao;
 	/**
 	 * @var CertificateEntity
 	 */
-	private $certificateEntity;
+	private $certificateEntity = NULL;
 
-
-	public function startup()
-	{
-		parent::startup();
-
-		$this->certificateDao = $this->context->getService('certificates.certificateDao');
-	}
 
 	public function actionDefault()
 	{

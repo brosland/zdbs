@@ -22,13 +22,13 @@ class BooleanParamEntity extends ParamEntity
 	/**
 	 * @param ParamTypeEntity $paramType
 	 * @param CertificateEntity $certificate
-	 * @param bool|string $value
+	 * @param bool $value
 	 */
 	public function __construct(ParamTypeEntity $paramType, CertificateEntity $certificate, $value)
 	{
 		parent::__construct($paramType, $certificate);
 
-		$this->value = (bool) $value;
+		$this->value = $value;
 	}
 
 	/**
