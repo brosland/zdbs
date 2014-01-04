@@ -25,12 +25,12 @@
 		"vendor-dir": "libs/composer"
 	},
 	"require": {
-		"kdyby/bootstrap-form-renderer": "v2.0.0",
-		"kdyby/curl": "v1.0.5",
-		"kdyby/doctrine": "v0.10.3",
-		"kdyby/forms-replicator": "dev-nette-2.0",
-		"jurasm2/gettexttranslator": "2.0.6",
-		"nette/nette": "v2.0.13",
+		"kdyby/autowired": "dev-master",
+		"kdyby/bootstrap-form-renderer": "dev-master",
+		"kdyby/curl": "dev-master",
+		"kdyby/doctrine": "dev-master",
+		"kdyby/forms-replicator": "dev-master",
+		"nette/nette": "v2.1.0",
 		"php": ">= 5.4"
 	}
 }
