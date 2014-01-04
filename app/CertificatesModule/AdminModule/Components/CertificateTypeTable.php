@@ -52,17 +52,17 @@ class CertificateTypeTable extends Table
 		$this->addAction('edit', 'Editovať')
 			->setIcon('ui-icon-pencil')
 			->setLink(callback(function($certificateType) use($presenter) {
-					return $presenter->link('CertificateType:edit', $certificateType->id);
+					return $presenter->link('CertificateType:edit', $certificateType->getId());
 				}));
 		$this->addAction('export', 'Export certifikátov')
 			->setIcon('ui-icon-arrowthick-1-s')
 			->setLink(callback(function($certificateType) use($table) {
-					return $table->link('exportCertificates', $certificateType->id);
+					return $table->link('exportCertificates!', $certificateType->getId());
 				}));
 		$this->addAction('import', 'Import certifikátov')
 			->setIcon('ui-icon-arrowthick-1-n')
-			->setLink(callback(function($certificateType) use($table) {
-					return $table->getPresenter()->link(':Certificates:Admin:Certificate:import', $certificateType->id);
+			->setLink(callback(function($certificateType) use($presenter) {
+					return $presenter->link(':Certificates:Admin:Certificate:import', $certificateType->getId());
 				}));
 
 		// toolbar
@@ -73,8 +73,8 @@ class CertificateTypeTable extends Table
 		$this->setSortTypes(array(
 			'name' => 'názvu',
 			'description' => 'popisu',
-			'codePrefix' => 'prefixu kódu',
-			'category' => 'kategórie'
+			'category.codePrefix' => 'prefixu kódu',
+			'category.name' => 'kategórie'
 		));
 
 		$this->setDefaultSorting(array('name' => 'asc'));

@@ -45,12 +45,12 @@ class CertificateTable extends Table
 		$this->addAction('detail', 'Detail')
 			->setIcon('ui-icon-zoomin')
 			->setLink(callback(function($certificate) use($presenter) {
-					return $presenter->link('Certificate:default', $certificate->id);
+					return $presenter->link('Certificate:default', $certificate->getId());
 				}));
 		$this->addAction('edit', 'Editovať')
 			->setIcon('ui-icon-pencil')
 			->setLink(callback(function($certificate) use($presenter) {
-					return $presenter->link('Certificate:edit', $certificate->id);
+					return $presenter->link('Certificate:edit', $certificate->getId());
 				}));
 
 		// toolbar
@@ -60,11 +60,11 @@ class CertificateTable extends Table
 		// sorting
 		$this->setSortTypes(array(
 			'code' => 'kódu',
-			'codePrefix' => 'prefixu kódu',
+			'certificateType.category.codePrefix' => 'prefixu kódu',
 			'created' => 'dátumu vytvorenia',
 			'expiration' => 'dátum expirácie',
-			'certificateType' => 'typu certifikátu',
-			'category' => 'kategórie'
+			'certificateType.name' => 'typu certifikátu',
+			'category.certificateType.category.name' => 'kategórie'
 		));
 
 		$this->setDefaultSorting(array('created' => 'desc'));

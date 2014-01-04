@@ -42,7 +42,7 @@ class CategoryTable extends Table
 		$this->addAction('edit', 'Editovať')
 			->setIcon('ui-icon-pencil')
 			->setLink(callback(function($category) use($presenter) {
-					return $presenter->link('Category:edit', $category->id);
+					return $presenter->link('Category:edit', $category->getId());
 				}));
 
 		// toolbar
