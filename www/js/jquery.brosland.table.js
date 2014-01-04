@@ -23,7 +23,7 @@ $(document).ready(function() {
 					return false;
 				});
 
-			checkbox.hide().after(icon);
+			checkbox.closest('label').hide().after(icon);
 		});
 	}
 	
