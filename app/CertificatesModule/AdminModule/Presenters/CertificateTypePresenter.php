@@ -109,6 +109,6 @@ class CertificateTypePresenter extends \Presenters\BasePresenter
 			->leftJoin('certificateType.category', 'category')
 			->groupBy('certificateType.id');
 
-		return new CertificateTypeTable($this->certificateTypeDao, $queryBuilder, $this->getHttpResponse());
+		return new CertificateTypeTable($this->certificateTypeDao, $queryBuilder);
 	}
 }

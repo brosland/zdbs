@@ -55,19 +55,26 @@ class CertificatePresenter extends \Presenters\BasePresenter
 	/**
 	 * @param int $certificateTypeId
 	 */
-	public function actionAdd($certificateTypeId)
+	public function actionAdd($certificateTypeId = NULL)
 	{
-		$this->certificateTypeEntity = $this->certificateTypeDao->find($certificateTypeId);
-
-		if (!$this->certificateTypeEntity)
+		if ($certificateTypeId !== NULL
+			&& $this->certificateTypeEntity = $this->certificateTypeDao->find($certificateTypeId))
 		{
-			throw new \Nette\Application\BadRequestException('Certificate type not found.', 404);
+			$this->setView('edit');
+
+			$certificateForm = $this['certificateForm'];
+			$certificateForm['save']->onClick[] = callback($this, 'addCertificate');
 		}
-
-		$this->setView('edit');
-
-		$certificateForm = $this['certificateForm'];
-		$certificateForm['save']->onClick[] = callback($this, 'addCertificate');
+		else
+		{
+			$this->setView('selectCertificateType');
+			
+			$form = $this['certificateTypeSelectForm'];
+			$form->onSuccess[] = callback(function(CertificateTypeSelectForm $form) {
+				$certificateType = $form->getValues()->certificateType;
+				$form->getPresenter()->forward('add', $certificateType->getId());
+			});
+		}
 	}
 
 	/**
@@ -78,18 +85,18 @@ class CertificatePresenter extends \Presenters\BasePresenter
 		$values = $button->getForm()->getValues();
 		$code = $this->generateCode();
 
-		$certificateEntity = new CertificateEntity($this->certificateTypeEntity, $code);
-		$certificateEntity->setExpiration($values->expiration);
+		$certificate = new CertificateEntity($this->certificateTypeEntity, $code);
+		$certificate->setExpiration($values->expiration);
 
 		foreach ($this->certificateTypeEntity->getParamTypes() as $paramType)
 		{
 			$paramName = $paramType->getName();
-			$param = $this->createParamEntity($certificateEntity, $paramType, $values->params->$paramName);
+			$param = $this->createParamEntity($certificate, $paramType, $values->params->$paramName);
 
-			$certificateEntity->getParams()->add($param);
+			$certificate->getParams()->add($param);
 		}
 
-		$this->certificateDao->save($certificateEntity);
+		$this->certificateDao->save($certificate);
 
 		$this->flashMessage('Certifikát bol úspešne pridaný.', 'success');
 		$this->redirect('list');
@@ -100,17 +107,17 @@ class CertificatePresenter extends \Presenters\BasePresenter
 	 */
 	public function actionEdit($id)
 	{
-		$certificateEntity = $this->certificateDao->find($id);
+		$certificate = $this->certificateDao->find($id);
 
-		if (!$certificateEntity)
+		if (!$certificate)
 		{
 			throw new \Nette\Application\BadRequestException('Certificate not found.');
 		}
 
-		$this->certificateTypeEntity = $certificateEntity->getCertificateType();
+		$this->certificateTypeEntity = $certificate->getCertificateType();
 
 		$certificateForm = $this['certificateForm'];
-		$certificateForm->bindEntity($certificateEntity);
+		$certificateForm->bindEntity($certificate);
 		$certificateForm['save']->onClick[] = callback($this, 'editCertificate');
 	}
 
@@ -120,17 +127,17 @@ class CertificatePresenter extends \Presenters\BasePresenter
 	public function editCertificate(SubmitButton $button)
 	{
 		$values = $button->getForm()->getValues();
-		$certificateEntity = $button->getForm()->getEntity()
+		$certificate = $button->getForm()->getEntity()
 			->setExpiration($values->expiration);
 
-		foreach ($certificateEntity->getParams() as $param)
+		foreach ($certificate->getParams() as $param)
 		/* @var $param \CertificatesModule\Models\Param\ParamEntity */
 		{
 			$name = $param->getParamType()->getName();
 			$param->setValue($values->params->$name);
 		}
 
-		$this->certificateDao->save($certificateEntity);
+		$this->certificateDao->save($certificate);
 		$this->certificateDao->getEntityManager()->flush();
 
 		$this->flashMessage('Certifikát bol úspešne upravený.', 'success');
@@ -142,12 +149,7 @@ class CertificatePresenter extends \Presenters\BasePresenter
 	 */
 	public function actionImport($certificateTypeId = NULL)
 	{
-		if ($certificateTypeId !== NULL)
-		{
-			$this->certificateTypeEntity = $this->certificateTypeDao->find($certificateTypeId);
-		}
-
-		$this['importCertificatesForm']['certificateType']->setDefaultValue($this->certificateTypeEntity);
+		$this['importCertificatesForm']['certificateType']->setDefaultValue($certificateTypeId);
 	}
 
 	/**
@@ -163,29 +165,29 @@ class CertificatePresenter extends \Presenters\BasePresenter
 		foreach ($xml->certificateType->certificate as $certificateXml)
 		{
 			$code = $this->generateCode();
-			$certificateEntity = new CertificateEntity($this->certificateTypeEntity, $code);
+			$certificate = new CertificateEntity($this->certificateTypeEntity, $code);
 
 			$created = (string) $certificateXml->created;
 			$created = empty($created) ? new DateTime()
 				: DateTime::createFromFormat(DateTime::W3C, (string) $certificateXml->created);
-			$certificateEntity->setCreated($created);
+			$certificate->setCreated($created);
 
 			$expiration = (string) $certificateXml->expiration;
 			$expiration = empty($expiration) ? NULL
 				: DateTime::createFromFormat(DateTime::W3C, (string) $certificateXml->expiration);
-			$certificateEntity->setExpiration($expiration);
+			$certificate->setExpiration($expiration);
 
 			foreach ($this->certificateTypeEntity->getParamTypes() as $paramType)
 			/* @var $paramType ParamTypeEntity */
 			{
 				$paramName = $paramType->getName();
-				$param = $this->createParamEntity($certificateEntity, $paramType,
+				$param = $this->createParamEntity($certificate, $paramType,
 					(string) $certificateXml->$paramName);
 
-				$certificateEntity->getParams()->add($param);
+				$certificate->getParams()->add($param);
 			}
 
-			$this->certificateDao->save($certificateEntity);
+			$this->certificateDao->save($certificate);
 		}
 
 		$this->certificateDao->getEntityManager()->flush();
@@ -195,17 +197,70 @@ class CertificatePresenter extends \Presenters\BasePresenter
 	}
 
 	/**
+	 * @param int $certificateTypeId
+	 */
+	public function actionExport($certificateTypeId = NULL)
+	{
+		if ($certificateTypeId !== NULL
+			&& $certificateType = $this->certificateTypeDao->find($certificateTypeId))
+		{
+			$this->exportCertificates($certificateType);
+		}
+		else
+		{
+			$this->setView('selectCertificateType');
+			
+			$this['certificateTypeSelectForm']->onSuccess[] = callback(function($form) {
+				$form->getPresenter()->exportCertificates($form->getValues()->certificateType);
+			});
+		}
+	}
+
+	/**
+	 * @param CertificateTypeEntity $certificateType
+	 */
+	public function exportCertificates(CertificateTypeEntity $certificateType)
+	{
+		$xml = new \SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><root></root>');
+		$certificateTypeXML = $xml->addChild('certificateType');
+		$certificateTypeXML->addAttribute('name', $certificateType->getName());
+
+		foreach ($certificateType->getCertificates() as $certificate)
+		/* @var $certificate CertificateEntity */
+		{
+			$certificateXML = $certificateTypeXML->addChild('certificate');
+			$certificateXML->addChild('code', $certificate->getCode());
+			$certificateXML->addChild('created', $certificate->getCreated()->format(DateTime::W3C));
+			$certificateXML->addChild('expiration', $certificate->hasExpiration() ?
+					$certificate->getExpiration()->format(DateTime::W3C) : '');
+
+			foreach ($certificate->getParams() as $param)
+			/* @var $param \CertificatesModule\Models\Param\ParamEntity */
+			{
+				$certificateXML->addChild($param->getParamType()->getName(), $param);
+			}
+		}
+
+		$dom = new \DOMDocument('1.0');
+		$dom->formatOutput = true;
+		$dom->loadXML($xml->asXML());
+
+		$fileName = $certificateType->getName() . '-export.xml';
+		$response = new \Nette\Application\Responses\TextResponse($dom->saveXML());
+
+		$this->getHttpResponse()->setHeader('Content-Description', 'File Transfer')
+			->setHeader('Content-Disposition', 'attachment; filename=' . $fileName)
+			->setContentType('application/xml', 'UTF-8');
+
+		$this->sendResponse($response);
+	}
+
+	/**
 	 * @return CertificateTypeSelectForm
 	 */
 	protected function createComponentCertificateTypeSelectForm()
 	{
-		$form = new CertificateTypeSelectForm($this->certificateTypeDao);
-		$form->onSuccess[] = callback(function(CertificateTypeSelectForm $form) {
-			$certificateType = $form->getValues()->certificateType;
-			$form->getPresenter()->redirect('add', $certificateType->getId());
-		});
-
-		return $form;
+		return new CertificateTypeSelectForm($this->certificateTypeDao);
 	}
 
 	/**
