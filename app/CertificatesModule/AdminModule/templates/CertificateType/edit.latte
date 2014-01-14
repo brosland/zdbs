@@ -3,7 +3,7 @@
 
 <script type="text/javascript">
 	$(function() {
-		$(document).on('click', '#frmcertificateTypeForm-generateTemplate', function() {
+		$(document).on('click', 'input:button[name="generateTemplate"]', function() {
 			var $table = $(document.createElement('table'));	
 			var $tbody = $(document.createElement('tbody'));
 			$table.append($tbody);
@@ -23,7 +23,7 @@
 				$tbody.append($tr);
 			});
 			
-			$('#frmcertificateTypeForm-template').val($table.prop('outerHTML'));
+			$('textarea[name="template"]').val($table.prop('outerHTML'));
 		});
 	});
 </script>
