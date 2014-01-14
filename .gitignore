@@ -1,3 +1,4 @@
+/app/config/config.local.neon
 /libs/*
 !/libs/brosland/
 !/libs/netterobots.txt
