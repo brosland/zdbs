@@ -64,8 +64,3 @@ common:
 production < common:
 
 development < common:
-	doctrine:
-		host: localhost
-		dbname: zdbs2
-		user: root
-		password: 
